@@ -13,7 +13,6 @@ int main() {
     if (fd == -1 ){
         perror("error opening file");
         return 1;
-
     }
     printf("now running");
     struct termios options; // creating the options struct where you set up the serial port
