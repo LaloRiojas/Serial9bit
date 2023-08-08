@@ -1,0 +1,21 @@
+# ninja log v5
+2	1248	1691101891839239154	CMakeFiles/Serial_Port_Testing_receive.dir/main.c.o	808a574b6baddad
+1249	2177	1691101892767009747	Serial_Port_Testing_receive	b42823ed04c5fd34
+1	97	1691101974194881555	CMakeFiles/Serial_Port_Testing_receive.dir/main.c.o	808a574b6baddad
+97	213	1691101974314851909	Serial_Port_Testing_receive	b42823ed04c5fd34
+1	274	1691102014816844157	CMakeFiles/Serial_Port_Testing_receive.dir/main.c.o	808a574b6baddad
+275	351	1691102014932815505	Serial_Port_Testing_receive	b42823ed04c5fd34
+1	91	1691102060793486209	CMakeFiles/Serial_Port_Testing_receive.dir/main.c.o	808a574b6baddad
+91	166	1691102060869467440	Serial_Port_Testing_receive	b42823ed04c5fd34
+1	98	1691102106166279673	CMakeFiles/Serial_Port_Testing_receive.dir/main.c.o	808a574b6baddad
+98	179	1691102106246259921	Serial_Port_Testing_receive	b42823ed04c5fd34
+1	274	1691102219034410034	CMakeFiles/Serial_Port_Testing_receive.dir/main.c.o	808a574b6baddad
+275	351	1691102219194370542	Serial_Port_Testing_receive	b42823ed04c5fd34
+1	150	1691102362766929705	CMakeFiles/Serial_Port_Testing_receive.dir/main.c.o	808a574b6baddad
+151	258	1691102362874903056	Serial_Port_Testing_receive	b42823ed04c5fd34
+1	88	1691102385757255291	CMakeFiles/Serial_Port_Testing_receive.dir/main.c.o	808a574b6baddad
+88	178	1691102385845233577	Serial_Port_Testing_receive	b42823ed04c5fd34
+1	189	1691102490419424690	CMakeFiles/Serial_Port_Testing_receive.dir/main.c.o	808a574b6baddad
+189	316	1691102490547393109	Serial_Port_Testing_receive	b42823ed04c5fd34
+1	110	1691104980121134980	CMakeFiles/Serial_Port_Testing_receive.dir/main.c.o	808a574b6baddad
+110	189	1691104980197127483	Serial_Port_Testing_receive	b42823ed04c5fd34

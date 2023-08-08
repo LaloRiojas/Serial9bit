@@ -1,0 +1,3 @@
+/home/lalo_pse/Documents/C_code/Serial_Port_Testing_send/cmake-build-debug/CMakeFiles/Serial_Port_Testing.dir
+/home/lalo_pse/Documents/C_code/Serial_Port_Testing_send/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/lalo_pse/Documents/C_code/Serial_Port_Testing_send/cmake-build-debug/CMakeFiles/rebuild_cache.dir
