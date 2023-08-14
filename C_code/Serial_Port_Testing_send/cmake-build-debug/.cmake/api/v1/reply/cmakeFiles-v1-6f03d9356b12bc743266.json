@@ -21,6 +21,11 @@
 		{
 			"isCMake" : true,
 			"isExternal" : true,
+			"path" : "/snap/clion/248/bin/cmake/linux/x64/share/cmake-3.26/Modules/CMakeUnixFindMake.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
 			"path" : "/snap/clion/248/bin/cmake/linux/x64/share/cmake-3.26/Modules/CMakeSystemSpecificInitialize.cmake"
 		},
 		{
@@ -300,6 +305,21 @@
 		{
 			"isCMake" : true,
 			"isExternal" : true,
+			"path" : "/snap/clion/248/bin/cmake/linux/x64/share/cmake-3.26/Modules/CMakeFindCodeBlocks.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/snap/clion/248/bin/cmake/linux/x64/share/cmake-3.26/Modules/CMakeExtraGeneratorDetermineCompilerMacrosAndIncludeDirs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/snap/clion/248/bin/cmake/linux/x64/share/cmake-3.26/Modules/ProcessorCount.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
 			"path" : "/snap/clion/248/bin/cmake/linux/x64/share/cmake-3.26/Modules/CMakeCInformation.cmake"
 		},
 		{
@@ -400,8 +420,8 @@
 	"kind" : "cmakeFiles",
 	"paths" : 
 	{
-		"build" : "/home/lalo_pse/Documents/C_code/Serial_Port_Testing_receive/cmake-build-debug",
-		"source" : "/home/lalo_pse/Documents/C_code/Serial_Port_Testing_receive"
+		"build" : "/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_send/cmake-build-debug",
+		"source" : "/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_send"
 	},
 	"version" : 
 	{

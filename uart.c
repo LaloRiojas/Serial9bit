@@ -483,30 +483,7 @@ int uart_write(unsigned char * b, int sz)
 		callback(c);
 	}
 	return sz;
-#ifdef USETXTRHEAD
-	int	ret;
-	int	cnt;
-
-	if(uart_thread_flag == 0)	/// system not running
-		return -1;
-
-	if(sz > MAX_TX_DATA)			/// buffer too large
-		return -2;
-
-	cnt = 0;
-
-	// wait if sending something
-	do{
-		usleep(10);
-	} while(txsz > 0 && ++cnt < 50);
-
-	if(txsz > 0) return -3;
-
-	ret = sz;
-	memcpy(txbuf,b,sz);
-	txsz = sz;
-	return ret;
-#endif
+#
 }
 /**
  *

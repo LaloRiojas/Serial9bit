@@ -26,8 +26,8 @@ int main() {
     options.c_cflag &= ~CSTOPB; // clears the stop bit flag. this means there is only one stop bit for now
     options.c_cflag &= ~CSIZE; // clears the size flag which indicates that the size of the data is determined in the next line
     options.c_cflag |= CS8; //8bit 1 byte
-    tty.c_cc[VTIME] = 10;    // Wait for up to 1s (10 deciseconds), returning as soon as any data is received.
-    tty.c_cc[VMIN] = 0;
+    options.c_cc[VTIME] = 10;    // Wait for up to 1s (10 deciseconds), returning as soon as any data is received.
+    options.c_cc[VMIN] = 0;
 
     tcsetattr(fd , TCSANOW, &options); // applys all the previously set bits.
 
