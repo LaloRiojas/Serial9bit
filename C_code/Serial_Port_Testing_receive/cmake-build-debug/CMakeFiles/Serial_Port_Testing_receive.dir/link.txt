@@ -1,0 +1,3 @@
+"C:\Program Files\JetBrains\CLion 2022.2.1\bin\cmake\win\bin\cmake.exe" -E rm -f CMakeFiles\Serial_Port_Testing_receive.dir/objects.a
+"C:\PROGRA~1\JetBrains\CLion 2022.2.1\bin\mingw\bin\ar.exe" qc CMakeFiles\Serial_Port_Testing_receive.dir/objects.a @CMakeFiles\Serial_Port_Testing_receive.dir\objects1.rsp
+"C:\PROGRA~1\JetBrains\CLion 2022.2.1\bin\mingw\bin\gcc.exe" -g -Wl,--whole-archive CMakeFiles\Serial_Port_Testing_receive.dir/objects.a -Wl,--no-whole-archive -o Serial_Port_Testing_receive.exe -Wl,--out-implib,libSerial_Port_Testing_receive.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\Serial_Port_Testing_receive.dir\linklibs.rsp
