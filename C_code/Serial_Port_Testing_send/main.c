@@ -1,3 +1,4 @@
+/*
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
@@ -49,4 +50,46 @@ int main() {
 
 
 
+}
+*/
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <termios.h>
+#include <unistd.h>
+#include <string.h>
+
+int main() {
+    const char *port = "/dev/ttyS0";  // Replace with the correct serial port (e.g., "/dev/ttyS0" for COM1)
+    int fd = open(port, O_WRONLY | O_NOCTTY);
+
+    if (fd == -1) {
+        perror("Error opening serial port");
+        return 1;
+    }
+
+    struct termios options;
+    tcgetattr(fd, &options);
+
+    // Set baud rate to 9600 (change it according to your requirements)
+    cfsetispeed(&options, B9600);
+    cfsetospeed(&options, B9600);
+
+    // Set other serial port settings
+    options.c_cflag |= (CLOCAL | CREAD);
+    options.c_cflag &= ~PARENB;
+    options.c_cflag &= ~CSTOPB;
+    options.c_cflag &= ~CSIZE;
+    options.c_cflag |= CS8;
+
+    tcsetattr(fd, TCSANOW, &options);
+
+    // Data to send
+    const char *data = "Hello, serial communication!\n";
+
+    // Write data to the serial port
+    write(fd, data, strlen(data));
+
+    close(fd);
+    return 0;
 }
