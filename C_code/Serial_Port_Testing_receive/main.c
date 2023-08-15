@@ -57,7 +57,7 @@ int main() {
 #include <unistd.h>
 
 int main() {
-    const char *port = "/dev/ttyS0";  // Replace with the correct serial port (e.g., "/dev/ttyS0" for COM1)
+    const char *port = "/dev/ttyS1";  // Replace with the correct serial port (e.g., "/dev/ttyS0" for COM1)
     int fd = open(port, O_RDONLY | O_NOCTTY);
 
     if (fd == -1) {
@@ -83,10 +83,9 @@ int main() {
 
     char buffer[255];
     int bytes_read;
-
+    printf("Reading from %s\n", port
     // Read data from the serial port
     bytes_read = read(fd, buffer, sizeof(buffer) - 1);
-
     if (bytes_read > 0) {
         buffer[bytes_read] = '\0';
         printf("Received data: %s", buffer);

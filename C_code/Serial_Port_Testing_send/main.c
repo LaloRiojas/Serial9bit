@@ -89,7 +89,8 @@ int main() {
 
     // Write data to the serial port
     write(fd, data, strlen(data));
-
+    printf("message sent\n");
     close(fd);
+    printf("port ttyS0 closed ending program\n");
     return 0;
 }
