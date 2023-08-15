@@ -4,7 +4,11 @@
 		"generator" : 
 		{
 			"multiConfig" : false,
+<<<<<<<< HEAD:C_code/Serial_Port_Testing_receive/cmake-build-debug/.cmake/api/v1/reply/index-2023-08-14T18-02-21-0652.json
 			"name" : "MinGW Makefiles"
+========
+			"name" : "Unix Makefiles"
+>>>>>>>> origin/master:C_code/Serial_Port_Testing_send/cmake-build-debug/.cmake/api/v1/reply/index-2023-08-14T18-27-23-0576.json
 		},
 		"paths" : 
 		{
@@ -26,7 +30,11 @@
 	"objects" : 
 	[
 		{
+<<<<<<<< HEAD:C_code/Serial_Port_Testing_receive/cmake-build-debug/.cmake/api/v1/reply/index-2023-08-14T18-02-21-0652.json
 			"jsonFile" : "codemodel-v2-c3e791cb91407bd37117.json",
+========
+			"jsonFile" : "codemodel-v2-beb8196f16b87d8b1f30.json",
+>>>>>>>> origin/master:C_code/Serial_Port_Testing_send/cmake-build-debug/.cmake/api/v1/reply/index-2023-08-14T18-27-23-0576.json
 			"kind" : "codemodel",
 			"version" : 
 			{
@@ -35,7 +43,11 @@
 			}
 		},
 		{
+<<<<<<<< HEAD:C_code/Serial_Port_Testing_receive/cmake-build-debug/.cmake/api/v1/reply/index-2023-08-14T18-02-21-0652.json
 			"jsonFile" : "cache-v2-38395f42b0cc1aa92c03.json",
+========
+			"jsonFile" : "cache-v2-3a838cfa9db3456c4770.json",
+>>>>>>>> origin/master:C_code/Serial_Port_Testing_send/cmake-build-debug/.cmake/api/v1/reply/index-2023-08-14T18-27-23-0576.json
 			"kind" : "cache",
 			"version" : 
 			{
@@ -44,7 +56,11 @@
 			}
 		},
 		{
+<<<<<<<< HEAD:C_code/Serial_Port_Testing_receive/cmake-build-debug/.cmake/api/v1/reply/index-2023-08-14T18-02-21-0652.json
 			"jsonFile" : "cmakeFiles-v1-42c206b80bdf7f3bfacc.json",
+========
+			"jsonFile" : "cmakeFiles-v1-6f03d9356b12bc743266.json",
+>>>>>>>> origin/master:C_code/Serial_Port_Testing_send/cmake-build-debug/.cmake/api/v1/reply/index-2023-08-14T18-27-23-0576.json
 			"kind" : "cmakeFiles",
 			"version" : 
 			{
@@ -53,7 +69,11 @@
 			}
 		},
 		{
+<<<<<<<< HEAD:C_code/Serial_Port_Testing_receive/cmake-build-debug/.cmake/api/v1/reply/index-2023-08-14T18-02-21-0652.json
 			"jsonFile" : "toolchains-v1-06fa10cc3f51226753f5.json",
+========
+			"jsonFile" : "toolchains-v1-ab6bc179ddbddbdb0d31.json",
+>>>>>>>> origin/master:C_code/Serial_Port_Testing_send/cmake-build-debug/.cmake/api/v1/reply/index-2023-08-14T18-27-23-0576.json
 			"kind" : "toolchains",
 			"version" : 
 			{
@@ -66,7 +86,11 @@
 	{
 		"cache-v2" : 
 		{
+<<<<<<<< HEAD:C_code/Serial_Port_Testing_receive/cmake-build-debug/.cmake/api/v1/reply/index-2023-08-14T18-02-21-0652.json
 			"jsonFile" : "cache-v2-38395f42b0cc1aa92c03.json",
+========
+			"jsonFile" : "cache-v2-3a838cfa9db3456c4770.json",
+>>>>>>>> origin/master:C_code/Serial_Port_Testing_send/cmake-build-debug/.cmake/api/v1/reply/index-2023-08-14T18-27-23-0576.json
 			"kind" : "cache",
 			"version" : 
 			{
@@ -76,7 +100,11 @@
 		},
 		"cmakeFiles-v1" : 
 		{
+<<<<<<<< HEAD:C_code/Serial_Port_Testing_receive/cmake-build-debug/.cmake/api/v1/reply/index-2023-08-14T18-02-21-0652.json
 			"jsonFile" : "cmakeFiles-v1-42c206b80bdf7f3bfacc.json",
+========
+			"jsonFile" : "cmakeFiles-v1-6f03d9356b12bc743266.json",
+>>>>>>>> origin/master:C_code/Serial_Port_Testing_send/cmake-build-debug/.cmake/api/v1/reply/index-2023-08-14T18-27-23-0576.json
 			"kind" : "cmakeFiles",
 			"version" : 
 			{
@@ -86,7 +114,11 @@
 		},
 		"codemodel-v2" : 
 		{
+<<<<<<<< HEAD:C_code/Serial_Port_Testing_receive/cmake-build-debug/.cmake/api/v1/reply/index-2023-08-14T18-02-21-0652.json
 			"jsonFile" : "codemodel-v2-c3e791cb91407bd37117.json",
+========
+			"jsonFile" : "codemodel-v2-beb8196f16b87d8b1f30.json",
+>>>>>>>> origin/master:C_code/Serial_Port_Testing_send/cmake-build-debug/.cmake/api/v1/reply/index-2023-08-14T18-27-23-0576.json
 			"kind" : "codemodel",
 			"version" : 
 			{
@@ -96,7 +128,11 @@
 		},
 		"toolchains-v1" : 
 		{
+<<<<<<<< HEAD:C_code/Serial_Port_Testing_receive/cmake-build-debug/.cmake/api/v1/reply/index-2023-08-14T18-02-21-0652.json
 			"jsonFile" : "toolchains-v1-06fa10cc3f51226753f5.json",
+========
+			"jsonFile" : "toolchains-v1-ab6bc179ddbddbdb0d31.json",
+>>>>>>>> origin/master:C_code/Serial_Port_Testing_send/cmake-build-debug/.cmake/api/v1/reply/index-2023-08-14T18-27-23-0576.json
 			"kind" : "toolchains",
 			"version" : 
 			{

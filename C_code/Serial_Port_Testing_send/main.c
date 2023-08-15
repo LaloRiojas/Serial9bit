@@ -9,7 +9,7 @@
 
 int main() {
 
-    const char* port = "/dev/ttyS0"; // this is from fcntl library
+    const char* port = "/dev/ttyS1"; // this is from fcntl library
     int fd = open(port, O_RDWR,O_NOCTTY)  ;
 
     if (fd == -1 ){
@@ -19,7 +19,7 @@ int main() {
     }
     struct termios options; // creating the options struct where you set up the serial port
 
-    fcntl(serial_fd, F_SETFL, 0);
+    fcntl(fd, F_SETFL, 0);
     tcgetattr(fd,&options); // associate the termios with the open serial port represented by fd
     cfsetispeed(&options,B9600); // set the input speed to 9600
     cfsetospeed(&options,B9600); // set the ouput speed to 9600
@@ -32,8 +32,8 @@ int main() {
     options.c_cflag &= ~CSTOPB; // clears the stop bit flag. this means there is only one stop bit for now
     options.c_cflag &= ~CSIZE; // clears the size flag which indicates that the size of the data is determined in the next line
     options.c_cflag |= CS8; //8bit 1 byte
-    tty.c_cc[VTIME] = 10;    // Wait for up to 1s (10 deciseconds), returning as soon as any data is received.
-    tty.c_cc[VMIN] = 0;
+    options.c_cc[VTIME] = 10;    // Wait for up to 1s (10 deciseconds), returning as soon as any data is received.
+    options.c_cc[VMIN] = 0;
 
     tcsetattr(fd , TCSANOW, &options); // applys all the;laksjdf;lkajsdf;lkjas;dlkjjfjjfj previously set bits.
 
