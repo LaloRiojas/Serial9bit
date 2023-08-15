@@ -51,7 +51,7 @@ void* ReceivingThread(void* port){
     }
     //sleep for 1ms
     usleep(1000);
-    return "receiving Thread DONE\n";
+    pthread_exit("receiving Thread DONE\n");
 
 }
 void* SendingThread(void* port){
@@ -64,7 +64,7 @@ void* SendingThread(void* port){
     }
     //sleep for 1ms
     usleep(1000);
-    return "sending Thread DONE\n";
+    pthread_exit( "sending Thread DONE\n");
 
 
 }
