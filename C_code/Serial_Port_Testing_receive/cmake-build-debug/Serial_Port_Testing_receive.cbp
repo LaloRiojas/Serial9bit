@@ -8,78 +8,78 @@
 		<Option virtualFolders="CMake Files\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="C:/Users/lalor/GITHUB/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug"/>
+				<Option working_dir="/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="C:/PROGRA~1/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/lalor/GITHUB/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="C:/PROGRA~1/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/lalor/GITHUB/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/PROGRA~1/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/lalor/GITHUB/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/PROGRA~1/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/lalor/GITHUB/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/gmake -j5 -f &quot;/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/gmake -j5 -f &quot;/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j5 -f &quot;/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j5 -f &quot;/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="Serial_Port_Testing_receive">
-				<Option output="C:/Users/lalor/GITHUB/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Serial_Port_Testing_receive.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="C:/Users/lalor/GITHUB/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug"/>
+				<Option output="/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Serial_Port_Testing_receive" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="C:/Program Files/JetBrains/CLion 2022.2.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/include"/>
-					<Add directory="C:/Program Files/JetBrains/CLion 2022.2.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/../../../../include"/>
-					<Add directory="C:/Program Files/JetBrains/CLion 2022.2.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed"/>
-					<Add directory="C:/Program Files/JetBrains/CLion 2022.2.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/../../../../x86_64-w64-mingw32/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="C:/PROGRA~1/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/lalor/GITHUB/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 Serial_Port_Testing_receive"/>
-					<CompileFile command="C:/PROGRA~1/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/lalor/GITHUB/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/PROGRA~1/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/lalor/GITHUB/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/PROGRA~1/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/lalor/GITHUB/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/gmake -j5 -f &quot;/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 Serial_Port_Testing_receive"/>
+					<CompileFile command="/usr/bin/gmake -j5 -f &quot;/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j5 -f &quot;/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j5 -f &quot;/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="Serial_Port_Testing_receive/fast">
-				<Option output="C:/Users/lalor/GITHUB/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Serial_Port_Testing_receive.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="C:/Users/lalor/GITHUB/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug"/>
+				<Option output="/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Serial_Port_Testing_receive" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="C:/Program Files/JetBrains/CLion 2022.2.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/include"/>
-					<Add directory="C:/Program Files/JetBrains/CLion 2022.2.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/../../../../include"/>
-					<Add directory="C:/Program Files/JetBrains/CLion 2022.2.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed"/>
-					<Add directory="C:/Program Files/JetBrains/CLion 2022.2.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/../../../../x86_64-w64-mingw32/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="C:/PROGRA~1/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/lalor/GITHUB/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 Serial_Port_Testing_receive/fast"/>
-					<CompileFile command="C:/PROGRA~1/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/lalor/GITHUB/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/PROGRA~1/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/lalor/GITHUB/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/PROGRA~1/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/lalor/GITHUB/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/gmake -j5 -f &quot;/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 Serial_Port_Testing_receive/fast"/>
+					<CompileFile command="/usr/bin/gmake -j5 -f &quot;/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j5 -f &quot;/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j5 -f &quot;/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="C:/Users/lalor/GITHUB/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug"/>
+				<Option working_dir="/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="C:/PROGRA~1/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/lalor/GITHUB/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="C:/PROGRA~1/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/lalor/GITHUB/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/PROGRA~1/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/lalor/GITHUB/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/PROGRA~1/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/lalor/GITHUB/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/gmake -j5 -f &quot;/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/gmake -j5 -f &quot;/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j5 -f &quot;/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j5 -f &quot;/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="C:/Users/lalor/GITHUB/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug"/>
+				<Option working_dir="/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="C:/PROGRA~1/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/lalor/GITHUB/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="C:/PROGRA~1/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/lalor/GITHUB/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/PROGRA~1/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/lalor/GITHUB/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/PROGRA~1/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/lalor/GITHUB/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/gmake -j5 -f &quot;/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/gmake -j5 -f &quot;/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j5 -f &quot;/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j5 -f &quot;/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="C:/Users/lalor/GITHUB/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/main.c">
+		<Unit filename="/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/main.c">
 			<Option target="Serial_Port_Testing_receive"/>
 		</Unit>
-		<Unit filename="C:/Users/lalor/GITHUB/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/CMakeLists.txt">
+		<Unit filename="/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
 	</Project>

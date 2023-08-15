@@ -8,11 +8,11 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "C:/Users/lalor/GITHUB/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/main.c" "CMakeFiles/Serial_Port_Testing_receive.dir/main.c.obj" "gcc" "CMakeFiles/Serial_Port_Testing_receive.dir/main.c.obj.d"
+  "/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/Serial_Port_Testing_receive/main.c" "CMakeFiles/Serial_Port_Testing_receive.dir/main.c.o" "gcc" "CMakeFiles/Serial_Port_Testing_receive.dir/main.c.o.d"
   )
 
-# Targets to which this target links.
-set(CMAKE_TARGET_LINKED_INFO_FILES
+# Targets to which this target links which contain Fortran sources.
+set(CMAKE_Fortran_TARGET_LINKED_INFO_FILES
   )
 
 # Fortran module output directory.

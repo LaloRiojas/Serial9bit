@@ -1,0 +1,3 @@
+/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/SerialPortThreads/cmake-build-debug/CMakeFiles/SerialPortThreads.dir
+/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/SerialPortThreads/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/laloriojas/CLionProjects/linux_serial_port_testing/C_code/SerialPortThreads/cmake-build-debug/CMakeFiles/rebuild_cache.dir

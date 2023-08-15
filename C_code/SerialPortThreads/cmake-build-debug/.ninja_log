@@ -1,0 +1,5 @@
+# ninja log v5
+0	43	1692125582570268929	build.ninja	9b4ab9374aa1cbe2
+0	39	1692124207075760617	CMakeFiles/SerialPortThreads.dir/main.c.o	2c0db6bdf504ed0a
+39	78	1692124207103757536	SerialPortThreads	7a5ae5cfa1b9aed9
+0	595	1692124006546827351	CMakeFiles/SerialPortThreads.dir/main.cpp.o	97933f2776281d31
