@@ -121,7 +121,7 @@ void* ReceivingThread(void* port){
                 printf("wakeupbit found\n");
                 break;
          }
-         if(count>20){
+         if(count>1000){
                 printf("error in wakeupbit");
                 pthread_exit(NULL);
          }
@@ -153,7 +153,7 @@ void* SendingThread(void* port){
         perror("error in setupSerialPort");
         exit(ret = 3);
     }
-    for (int i = 0; i < 5; ++i) {
+    for (int i = 0; i < 1000; ++i) {
         //send9bit(fd, 0x01 & 0x80);// 0x01 is the address of gaming machine 1. 0x80 is offset according to SAS protocol
         send9bit(fd, 'W');
         usleep(200000);//200ms polling
