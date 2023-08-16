@@ -41,7 +41,55 @@ int setupSerialPort(const char *port, int* fd) {
 
     return 0;
 }
+int send9bit(int fd,unsigned char data){
+    struct termios options;
+    if(tcgetattr(fd, &options) != 0){
+        perror("error in tcgetattr");
+        return (-1);
+    }
+    options.c_cflag |= PARENB|CMSPAR|PARODD;
+    if(tcsetattr(fd, TCSANOW,&options) != 0){
+        perror("error in tcsetattr");
+        return -1;
+    }
+    if(write(fd,&data,1) != 1){
+        perror("error in write");
+        return -1;
+    }
+    options.c_cflag &= ~(PARODD);
+    if(tcsetattr(fd, TCSANOW,&options) != 0){
+        perror("error in tcsetattr");
+        return -1;
+    }
+    return 0;
+
+
+}
+bool check9bit( int fd, unsigned char* data){ // data will always be the last real byte sent. it will never be the 0xff or 0x00 byte that comes from the parity bit.
+    read(fd,data,sizeof(*data));
+    printf("%c",*data);
+    if(*data ==0xff){//catch byte
+        read(fd,data,sizeof(*data));
+        printf("%c",*data);
+        if(*data = 0x00){//parity bit set.
+            read(fd,data,sizeof(*data));// read the next bit. this is the real data
+            printf("%c",*data);
+            return true;
+        }
+        else if (*data ==0xff){ // the real data was 0xff. the stream was 0xff/0xff
+            return false;
+        }
+        else{
+            printf("error in check9bit");
+            return false;
+        }
+
+    }
+    return false;
+}
+
 void* ReceivingThread(void* port){
+
     printf("ReceivingThread started\n");
     port = (char*)port;
     int fd;
@@ -49,24 +97,58 @@ void* ReceivingThread(void* port){
         perror("error in setupSerialPort");
         exit(3);
     }
-    //sleep for 1ms
-    usleep(1000);
-    pthread_exit("receiving Thread DONE\n");
+    int count = 0;
+    unsigned char data;
+    char String [20];
+    int stringIndex = 0;
+    bool wakeupbit = false;
+     while (!wakeupbit){
+         wakeupbit = check9bit(fd, &data);
+         count ++;
+         if(count>20){
+                printf("error in wakeupbit");
+                pthread_exit(NULL);
+         }
+     }
+     count =1;
+    while(count<5){
+            wakeupbit=false;
+            do {
+                String[stringIndex] = data;
+                stringIndex++;
+                wakeupbit = check9bit(fd, &data);
+            }
+            while(!wakeupbit);
+            String[stringIndex] = '\0';
+            printf("received data == :%s\n", String);
+            stringIndex = 0;
+            memset(String,0,sizeof(String));
+            count++;
+    }
 
+    pthread_exit( NULL);
 }
 void* SendingThread(void* port){
+    int ret =0;
     printf("SendingThread started\n");
     port = (char*)port;
     int fd;
     if(0!= setupSerialPort(port,&fd)){
         perror("error in setupSerialPort");
-        exit(3);
+        exit(ret = 3);
     }
-    //sleep for 1ms
-    usleep(1000);
-    pthread_exit( "sending Thread DONE\n");
+    for (int i = 0; i < 5; ++i) {
+        //send9bit(fd, 0x01 & 0x80);// 0x01 is the address of gaming machine 1. 0x80 is offset according to SAS protocol
+        send9bit(fd, 'W')
+        write(fd, "hello", 5);
+        usleep(200000);//200ms polling
+    }
 
 
+
+
+
+    pthread_exit( &ret);
 }
 
 int main() {
@@ -78,18 +160,14 @@ int main() {
         printf("error creating SendThread\n");
         return 1;
     }
-    printf("SendThread created\n");
+
     if( pthread_create(&ReceiveThread, NULL, ReceivingThread, (void*)Receiveport) !=0){
         printf("error creating SendThread\n");
         return 1;
     }
-    printf("ReceiveThread created\n");
-    void *sendResult = NULL, *receiveResult =NULL;
-
-    pthread_join(SendThread, sendResult);
-    pthread_join(ReceiveThread, receiveResult);
-    printf("SendThread result: %s\n", (char*)sendResult);
-    printf("ReceiveThread result: %s\n", (char*)receiveResult);
+    
+    pthread_join(SendThread, NULL);
+    pthread_join(ReceiveThread, NULL);
 
 
 
