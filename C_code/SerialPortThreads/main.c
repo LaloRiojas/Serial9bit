@@ -8,9 +8,10 @@
 #include <pthread.h>
 pthread_t SendThread, ReceiveThread;
 typedef struct {
-    char data[250];
-    int index;
-}GlobalsendData;
+    unsigned char data;
+    bool parity;
+    bool isODD;
+} message;
 
 int setupSerialPort(const char *port, int* fd) {
     *fd = open(port, O_RDWR | O_NOCTTY);
@@ -18,25 +19,36 @@ int setupSerialPort(const char *port, int* fd) {
         perror("Error opening serial port");
         return -1;
     }
+
     struct termios options;
     tcgetattr(*fd, &options);
-    cfmakeraw(&options);
+
+
     cfsetispeed(&options, B9600);
     cfsetospeed(&options, B9600);
 
-    options.c_cflag |= CMSPAR; // this controls the parity bit
-    options.c_cflag &= ~PARENB; // this sets the partiy bit to 0 as default
 
-    options.c_cflag &= ~CSTOPB; // one stop bit
-    options.c_cflag |= PARENB; // engable parity bit generation
-    options.c_cflag |= INPCK; // enable parity checking
-    options.c_cflag |= PARMRK; // mark parity errors
-    options.c_cflag &= ~IGNPAR; // don't ignore parity bits received
+
+    fcntl(*fd, F_SETFL, 0);
+    cfmakeraw(&options);
+    options.c_cflag |= (CLOCAL | CREAD);
+    options.c_cflag &= ~CSIZE;
+    options.c_cflag |= CS8;
+
+    options.c_cflag |=CMSPAR;
+    options.c_cflag |=PARODD;
+    options.c_cflag |=PARENB;
+    options.c_iflag |=INPCK;
+    options.c_iflag |=PARMRK;
+
+    options.c_lflag &= ~(ICANON | ECHO | ECHOE |ISIG);
+    options.c_iflag &= ~(IXON | IXOFF | IXANY);
 
     if(tcsetattr(*fd, TCSANOW,&options) != 0){
         perror("error in tcsetattr");
         return -1;
     }
+    tcflush(*fd,TCIFLUSH);
 
 
     return 0;
@@ -48,10 +60,6 @@ int send9bit(int fd,unsigned char data){
         return (-1);
     }
    options.c_cflag |= 0x40000000;//CMSPAR;
-   options.c_iflag |= PARMRK;
-   options.c_iflag |= INPCK;
-   options.c_cflag |= PARENB;
-   options.c_cflag |= PARODD;
     if(tcsetattr(fd, TCSANOW,&options) != 0){
         perror("error in tcsetattr");
         return -1;
