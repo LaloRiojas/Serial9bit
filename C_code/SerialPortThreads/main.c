@@ -110,9 +110,9 @@ void* ReceivingThread(void* port){
                 pthread_exit(NULL);
          }
      }
+     // wait for fisrt wakeup bit
      count =1;
     while(count<5){
-            wakeupbit=false;
             do {
                 String[stringIndex] = data;
                 stringIndex++;
