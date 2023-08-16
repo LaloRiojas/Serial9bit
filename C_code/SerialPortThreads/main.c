@@ -47,7 +47,11 @@ int send9bit(int fd,unsigned char data){
         perror("error in tcgetattr");
         return (-1);
     }
-    options.c_cflag |= PARENB|CMSPAR|PARODD;
+   options.c_cflag |= 0x40000000;//CMSPAR;
+   options.c_iflag |= PARMRK;
+   options.c_iflag |= INPCK;
+   options.c_cflag |= PARENB;
+   options.c_cflag |= PARODD;
     if(tcsetattr(fd, TCSANOW,&options) != 0){
         perror("error in tcsetattr");
         return -1;
@@ -56,12 +60,10 @@ int send9bit(int fd,unsigned char data){
         perror("error in write");
         return -1;
     }
-    options.c_cflag |= PARENB|CMSPAR;
-    options.c_cflag &= ~(PARODD);
-    if(tcsetattr(fd, TCSADRAIN,&options) != 0){
+/*    if(tcsetattr(fd, TCSADRAIN,&options) != 0){
         perror("error in tcsetattr");
         return -1;
-    }
+    }*/
     return 0;
 
 
