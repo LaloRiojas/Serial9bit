@@ -56,8 +56,9 @@ int send9bit(int fd,unsigned char data){
         perror("error in write");
         return -1;
     }
+    options.c_cflag |= PARENB|CMSPAR;
     options.c_cflag &= ~(PARODD);
-    if(tcsetattr(fd, TCSANOW,&options) != 0){
+    if(tcsetattr(fd, TCSADRAIN,&options) != 0){
         perror("error in tcsetattr");
         return -1;
     }
@@ -106,6 +107,10 @@ void* ReceivingThread(void* port){
          wakeupbit = check9bit(fd, &data);
          printf(": wakeupbit = %d\n",wakeupbit);
          count ++;
+         if(wakeupbit){
+                printf("wakeupbit found\n");
+                break;
+         }
          if(count>20){
                 printf("error in wakeupbit");
                 pthread_exit(NULL);
@@ -141,7 +146,6 @@ void* SendingThread(void* port){
     for (int i = 0; i < 5; ++i) {
         //send9bit(fd, 0x01 & 0x80);// 0x01 is the address of gaming machine 1. 0x80 is offset according to SAS protocol
         send9bit(fd, 'W');
-        write(fd, "hello", 5);
         usleep(200000);//200ms polling
     }
 
