@@ -102,17 +102,18 @@ void* ReceivingThread(void* port){
     char String [20];
     int stringIndex = 0;
     bool wakeupbit = false;
-     while (!wakeupbit){
+    while (!wakeupbit){
          wakeupbit = check9bit(fd, &data);
+         printf(": wakeupbit = %d\n",wakeupbit);
          count ++;
          if(count>20){
                 printf("error in wakeupbit");
                 pthread_exit(NULL);
          }
-     }
+    }
      // wait for fisrt wakeup bit
-     count =1;
-    while(count<5){
+     //count =1;
+/*    while(count<5){
             do {
                 String[stringIndex] = data;
                 stringIndex++;
@@ -124,7 +125,7 @@ void* ReceivingThread(void* port){
             stringIndex = 0;
             memset(String,0,sizeof(String));
             count++;
-    }
+    }*/
 
     pthread_exit( NULL);
 }
