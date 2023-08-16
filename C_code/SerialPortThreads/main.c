@@ -140,7 +140,7 @@ void* SendingThread(void* port){
     }
     for (int i = 0; i < 5; ++i) {
         //send9bit(fd, 0x01 & 0x80);// 0x01 is the address of gaming machine 1. 0x80 is offset according to SAS protocol
-        send9bit(fd, 'W')
+        send9bit(fd, 'W');
         write(fd, "hello", 5);
         usleep(200000);//200ms polling
     }
