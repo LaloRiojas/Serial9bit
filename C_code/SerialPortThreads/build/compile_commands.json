@@ -1,0 +1,22 @@
+[
+{
+  "directory": "/home/lalo/linux code serial port/linux_serial_port_testing/C_code/SerialPortThreads/build",
+  "command": "/usr/bin/gcc   -g -o CMakeFiles/SerialPortThreads.dir/main.c.o -c \"/home/lalo/linux code serial port/linux_serial_port_testing/C_code/SerialPortThreads/main.c\"",
+  "file": "/home/lalo/linux code serial port/linux_serial_port_testing/C_code/SerialPortThreads/main.c"
+},
+{
+  "directory": "/home/lalo/linux code serial port/linux_serial_port_testing/C_code/SerialPortThreads/build",
+  "command": "/usr/bin/gcc   -g -o CMakeFiles/SerialPortThreads.dir/receive.c.o -c \"/home/lalo/linux code serial port/linux_serial_port_testing/C_code/SerialPortThreads/receive.c\"",
+  "file": "/home/lalo/linux code serial port/linux_serial_port_testing/C_code/SerialPortThreads/receive.c"
+},
+{
+  "directory": "/home/lalo/linux code serial port/linux_serial_port_testing/C_code/SerialPortThreads/build",
+  "command": "/usr/bin/gcc   -g -o CMakeFiles/SerialPortThreads.dir/send.c.o -c \"/home/lalo/linux code serial port/linux_serial_port_testing/C_code/SerialPortThreads/send.c\"",
+  "file": "/home/lalo/linux code serial port/linux_serial_port_testing/C_code/SerialPortThreads/send.c"
+},
+{
+  "directory": "/home/lalo/linux code serial port/linux_serial_port_testing/C_code/SerialPortThreads/build",
+  "command": "/usr/bin/gcc   -g -o CMakeFiles/SerialPortThreads.dir/Serial.c.o -c \"/home/lalo/linux code serial port/linux_serial_port_testing/C_code/SerialPortThreads/Serial.c\"",
+  "file": "/home/lalo/linux code serial port/linux_serial_port_testing/C_code/SerialPortThreads/Serial.c"
+}
+]

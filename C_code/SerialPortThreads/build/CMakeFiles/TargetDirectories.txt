@@ -1,0 +1,3 @@
+/home/lalo/linux code serial port/linux_serial_port_testing/C_code/SerialPortThreads/build/CMakeFiles/SerialPortThreads.dir
+/home/lalo/linux code serial port/linux_serial_port_testing/C_code/SerialPortThreads/build/CMakeFiles/edit_cache.dir
+/home/lalo/linux code serial port/linux_serial_port_testing/C_code/SerialPortThreads/build/CMakeFiles/rebuild_cache.dir
