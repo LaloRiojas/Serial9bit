@@ -307,7 +307,8 @@ CMakeFiles/SerialPortThreads.dir/receive.c.o: ../receive.c \
   /usr/include/stdint.h \
   /usr/include/x86_64-linux-gnu/bits/wchar.h \
   /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
-  ../Serial.h
+  ../Serial.h \
+  ../receive.h
 
 CMakeFiles/SerialPortThreads.dir/send.c.o: ../send.c \
   /usr/include/stdc-predef.h \

@@ -14,7 +14,6 @@
 
 pthread_t SendThread, ReceiveThread;
 int main() {
-    printf("starting program\n");
     const char *Sendport = "/dev/ttyS0";
     const char *Receiveport = "/dev/ttyS1";
 
@@ -22,14 +21,12 @@ int main() {
         printf("error creating SendThread\n");
         return 1;
     }
-    printf("Send Thread created\n");
 
     if( pthread_create(&ReceiveThread, NULL, ReceivingThread, (void*)Receiveport) !=0){
         printf("error creating SendThread\n");
         return 1;
     }
 
-    printf("Receive Thread Created\n");
 
     pthread_join(SendThread, NULL);
     pthread_join(ReceiveThread, NULL);

@@ -87,4 +87,5 @@ CMakeFiles/SerialPortThreads.dir/receive.c.o: \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdint.h /usr/include/stdint.h \
  /usr/include/x86_64-linux-gnu/bits/wchar.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
- /home/lalo/linux\ code\ serial\ port/linux_serial_port_testing/C_code/SerialPortThreads/Serial.h
+ /home/lalo/linux\ code\ serial\ port/linux_serial_port_testing/C_code/SerialPortThreads/Serial.h \
+ /home/lalo/linux\ code\ serial\ port/linux_serial_port_testing/C_code/SerialPortThreads/receive.h
