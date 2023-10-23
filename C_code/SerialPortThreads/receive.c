@@ -10,6 +10,17 @@
 
 #include "Serial.h"
 
+void red () {
+  printf("\033[1;31m");
+}
+
+void yellow() {
+  printf("\033[1;33m");
+}
+
+void reset () {
+  printf("\033[0m");
+}
 
 
 bool check9bit( int fd, unsigned char* data){ // data will always be the last real byte sent. it will never be the 0xff or 0x00 byte that comes from the parity bit.
@@ -35,22 +46,40 @@ bool check9bit( int fd, unsigned char* data){ // data will always be the last re
     return false;
 }
 
+void print_results(char* buf, int size){
+    for(int i=0;i<size;i++){
+        char c = buf[i];
+        if(c==0){
+            printf("%d",buf[i]);
+        }
+        else if(c==-1){
+            printf("n");
+        }
+        else{
+            red();
+            printf("%c",buf[i]);
+            reset();
+        }
+    }
+
+    printf("\n");
+}
+
+#define buffer_size 30
 void* ReceivingThread(void* port){
 
     printf("ReceivingThread started\n");
     port = (char*)port;
     int fd;
     fd = Setup_Serial_Receive(port);
-
-    int count = 0;
-    unsigned char data;
+    sleep(1);
+    char buf [buffer_size];
     printf("\n\n");
-    while (count <10){
-        read(fd,&data,1);
-        printf("%c",data);
-        count++;
-    }
+    read(fd,&buf,buffer_size);
     printf("\n\n");
+    print_results((char*)&buf,buffer_size);
 
     pthread_exit( NULL);
 }
+
+

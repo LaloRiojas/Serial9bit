@@ -19,26 +19,33 @@ void Set_Parity_Bit(uint8_t* data, int fd, bool parity_bit){
     }
 
 
-    uint8_t odd_even = oddEvenParityTable[*data];
-    uint8_t parity_setting;
-    if(parity_bit){ // if you want the 9th bit to be 1
-        parity_setting = odd_even; // you set the parity setting to be the same as the parity of the data
-    }
-    else{ // if yout want the 9th bit to be 0
-        parity_setting = !odd_even; // you set the parity setting to be the opposite of the parity of the data
-    }
+    bool odd = oddEvenParityTable[*data]; // look up table for the even/odd high bits of the data (only for 8 bit data)
 
 
     struct termios options;
     tcgetattr(fd, &options);
     options.c_cflag|= PARENB;
-    if(parity_setting){
-        options.c_cflag|= PARODD;
+    printf(" ,parity bit %1d ,oddness %1d",parity_bit,odd);
+    if(parity_bit){
+        options.c_cflag|= PARODD; //odd parity
+        printf(" ,odd parity\n");
     }
     else{
-        options.c_cflag&= ~PARODD;
+        options.c_cflag&= ~PARODD; //even parity
+        printf(" ,even parity\n");
     }
+    // if((odd&&parity_bit)||(!parity_bit&&!odd)){ 
+    //     options.c_cflag|= PARODD; //odd parity
+    //     printf("odd parity\n");
+    // }
+    // else{
+    //     options.c_cflag&= ~PARODD; //even parity
+    //     printf("even parity\n");
+    // }
+
+    
     tcsetattr(fd, TCSADRAIN ,&options);
+
     tcdrain(fd);
 }
 void Init_Parity_Table(void){
@@ -68,8 +75,8 @@ int Setup_Serial_Receive(const char* port){
     tcgetattr(fd, &options);
 
     //setup parrity
-    options.c_cflag |= PARENB; // enable parity marking see end of file for description on how to detect parity
-    options.c_cflag &= ~PARODD; // default is even parity but will be switched depending on data being sent  when sending
+    //options.c_cflag |= PARENB; // enable parity marking see end of file for description on how to detect parity
+    //options.c_cflag &= ~PARODD; // default is even parity but will be switched depending on data being sent  when sending
 
     options.c_iflag |= PARMRK; // mark parity errors
     options.c_iflag &= ~IGNPAR; // dont ignore parity errors
@@ -88,7 +95,7 @@ int Setup_Serial_Receive(const char* port){
     //enable the reader
     options.c_cflag |= CREAD;
 
-    //make readding blocking unitl 1 byte is read
+    //make readding blocking unitl 1 initial byte is read
     options.c_cc[VMIN] = 1;
     options.c_cc[VTIME] = 0;
 
