@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/Serial_Port_Testing_receive.dir/main.c.o -o Serial_Port_Testing_receive 
