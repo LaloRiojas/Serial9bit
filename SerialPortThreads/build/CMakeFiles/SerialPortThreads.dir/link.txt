@@ -1,1 +1,0 @@
-/usr/bin/gcc -g CMakeFiles/SerialPortThreads.dir/main.c.o CMakeFiles/SerialPortThreads.dir/receive.c.o CMakeFiles/SerialPortThreads.dir/send.c.o CMakeFiles/SerialPortThreads.dir/Serial.c.o -o SerialPortThreads 
