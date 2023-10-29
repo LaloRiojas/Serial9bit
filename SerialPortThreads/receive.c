@@ -12,13 +12,7 @@
 #include "receive.h"
 
 #define buffer_size 30
-void* ReceivingThread(void* port){
-
-    printf("ReceivingThread started\n");
-    port = (char*)port;
-    int fd;
-    fd = Setup_Serial_Receive(port);
-
+void* ReceivingThread(int fd){
 
     char buf [buffer_size];
     DataFrame_9bit data[buffer_size];

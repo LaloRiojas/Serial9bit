@@ -67,16 +67,35 @@ uint8_t read_table(uint8_t data){
     return oddEvenParityTable[data];
 }
 
-int Setup_Serial_Receive(const char* port){
+int Setup_Serial_Receive(const char* port, int baudrate){
     int fd = open(port, O_RDONLY | O_NOCTTY);
     if (fd == -1) {
-        perror("Error opening serial port");
-        exit(3);
+        printf("could not open Receive port '%s' immediately: blocking until available\n",port);
+    }
+    while ((fd = open(port, O_RDONLY | O_NOCTTY)) == -1) {
+
     }
 
     struct termios options;
-    cfsetispeed(&options, B9600);
-    tcgetattr(fd, &options);
+    if(baudrate == 9600){
+        cfsetospeed(&options, B9600);
+    }
+    else if(baudrate == 19200){
+        cfsetospeed(&options, B19200);
+    }
+    else if(baudrate == 38400){
+        cfsetospeed(&options, B38400);
+    }
+    else if(baudrate == 57600){
+        cfsetospeed(&options, B57600);
+    }
+    else if(baudrate == 115200){
+        cfsetospeed(&options, B115200);
+    }
+    else{
+        printf("invalid baudrate when settting up Send port '%s'\n",port);
+        exit(1);
+    }    tcgetattr(fd, &options);
 
     //setup parrity
     options.c_cflag |= PARENB; // enable parity marking see end of file for description on how to detect parity
@@ -117,14 +136,35 @@ int Setup_Serial_Receive(const char* port){
     return fd;
 
 }
-int Setup_Serial_Send(const char* port){
+int Setup_Serial_Send(const char* port, int baudrate){
     int fd = open(port, O_WRONLY| O_NOCTTY|O_SYNC );
-    if (fd == -1) {
-        perror("Error opening serial port");
-        exit(3);
+    if(fd == -1){
+        printf("could not open Sending port '%s' immediately: blocking until available\n",port);
     }
+    while ((fd = open(port, O_WRONLY| O_NOCTTY|O_SYNC )) == -1) {
+
+    }
+    
     struct termios options;
-    cfsetospeed(&options, B9600);
+    if(baudrate == 9600){
+        cfsetospeed(&options, B9600);
+    }
+    else if(baudrate == 19200){
+        cfsetospeed(&options, B19200);
+    }
+    else if(baudrate == 38400){
+        cfsetospeed(&options, B38400);
+    }
+    else if(baudrate == 57600){
+        cfsetospeed(&options, B57600);
+    }
+    else if(baudrate == 115200){
+        cfsetospeed(&options, B115200);
+    }
+    else{
+        printf("invalid baudrate when settting up Send port '%s'\n",port);
+        exit(1);
+    }
     tcgetattr(fd, &options);
 
     //setup parrity
@@ -149,16 +189,32 @@ int Setup_Serial_Send(const char* port){
     return fd;
     
 }
-int Setup_Serial_SendAndReceive(const char* port){
+int Setup_Serial_SendAndReceive(const char* port, int baudrate){
         int fd = open(port, O_RDWR | O_NOCTTY | O_SYNC);
     if (fd == -1) {
-        perror("Error opening serial port");
-        exit(3);
+        printf("could not open SendAndReceive port '%s' immediately: blocking until available\n",port);
     }
 
     struct termios options;
-    cfsetispeed(&options, B9600);
-    tcgetattr(fd, &options);
+    if(baudrate == 9600){
+        cfsetospeed(&options, B9600);
+    }
+    else if(baudrate == 19200){
+        cfsetospeed(&options, B19200);
+    }
+    else if(baudrate == 38400){
+        cfsetospeed(&options, B38400);
+    }
+    else if(baudrate == 57600){
+        cfsetospeed(&options, B57600);
+    }
+    else if(baudrate == 115200){
+        cfsetospeed(&options, B115200);
+    }
+    else{
+        printf("invalid baudrate when settting up Send port '%s'\n",port);
+        exit(1);
+    }    tcgetattr(fd, &options);
 
     //setup parrity
     options.c_cflag |= PARENB; // enable parity marking see end of file for description on how to detect parity
@@ -199,15 +255,15 @@ int Setup_Serial_SendAndReceive(const char* port){
     return fd;
 
 }
-int Setup_Serial_Port(const char *port,uint8_t type) {
+int Setup_Serial_Port(const char *port,uint8_t type, int baudrate) {
     if(type == READ){
-        return Setup_Serial_Receive(port);
+        return Setup_Serial_Receive(port,baudrate);
     }
     else if(type == WRITE){
-       return  Setup_Serial_Send(port);
+       return  Setup_Serial_Send(port, baudrate);
     }
     else if(type == READWRITE){
-        return Setup_Serial_SendAndReceive(port);
+        return Setup_Serial_SendAndReceive(port,baudrate);
     }
     else{
         printf("error in setupSerialPort type is not READ, WRITE or READWRITE");
@@ -221,6 +277,7 @@ int Setup_Serial_Port(const char *port,uint8_t type) {
 //SENDING FUNCTIONS
 
 int Write_Char_9bit(int fd,unsigned char data,bool wakeupbit){
+    
     #ifdef DEBUG
         printf("writing %c/%d",data,data);
     #endif
@@ -235,10 +292,14 @@ int Write_Char_9bit(int fd,unsigned char data,bool wakeupbit){
 int Write_String_9bit(int fd, char* data,int wakeupbitset){ 
     int len = strlen(data);
     for (uint32_t i=0 ; i<len; i++){
+        clock_t start = clock();
         int errno =  Write_Char_9bit(fd, data[i],wakeupbitset&1);
+        clock_t end = clock();
         if(errno==-1){
             return -1;
         }
+        double time_spent = (double)(end - start) / CLOCKS_PER_SEC;
+        printf("character %c with 9th bit set to %d sent in %f seconds\n",data[i],wakeupbitset&1, time_spent);
         wakeupbitset = wakeupbitset>>1;
     }
     return 0;
