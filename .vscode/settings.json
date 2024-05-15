@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "*.ino": "cpp",
+        "array": "c",
+        "memory": "c",
+        "functional": "c",
+        "tuple": "c",
+        "utility": "c",
+        "unistd.h": "c"
+    }
+}

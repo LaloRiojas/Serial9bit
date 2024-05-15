@@ -1,2 +1,1 @@
-
-void* ReceivingThread(void* port);
+void* ReceivingThread(void* fd);

@@ -1,3 +1,3 @@
 
 
-void* SendingThread(void* port);
+void* SendingThread(void* fd);

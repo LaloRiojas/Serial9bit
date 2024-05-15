@@ -12,15 +12,20 @@
 #include "receive.h"
 
 #define buffer_size 30
-void* ReceivingThread(int fd){
+void* ReceivingThread(void* c){
+
+    Serial9BitConfig* config = c;
+    int fd = Setup_Serial_Receive(config->receivePort,config->baudrate);
+
 
     char buf [buffer_size];
     DataFrame_9bit data[buffer_size];
     int messagesize = read(fd,&buf,buffer_size);
     
+
+
     Process_9bit(buf,data,messagesize);
     Print_processed_data(data,messagesize);
-
     pthread_exit( NULL);
 }
 

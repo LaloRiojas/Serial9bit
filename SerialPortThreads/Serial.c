@@ -14,8 +14,8 @@
 uint8_t oddEvenParityTable [255];
 bool tableInitialized = false;
 void Init_Parity_Table(void){
-    uint8_t count =0;
-    for(;count<255;count++ ){
+    
+    for(uint8_t count =0;count<255;count++ ){
         uint8_t temp = count;
         uint8_t parity = 0;
         while(temp){
@@ -136,6 +136,7 @@ int Setup_Serial_Receive(const char* port, int baudrate){
     return fd;
 
 }
+
 int Setup_Serial_Send(const char* port, int baudrate){
     int fd = open(port, O_WRONLY| O_NOCTTY|O_SYNC );
     if(fd == -1){
@@ -189,7 +190,10 @@ int Setup_Serial_Send(const char* port, int baudrate){
     return fd;
     
 }
+
 int Setup_Serial_SendAndReceive(const char* port, int baudrate){
+
+
         int fd = open(port, O_RDWR | O_NOCTTY | O_SYNC);
     if (fd == -1) {
         printf("could not open SendAndReceive port '%s' immediately: blocking until available\n",port);
@@ -255,15 +259,26 @@ int Setup_Serial_SendAndReceive(const char* port, int baudrate){
     return fd;
 
 }
-int Setup_Serial_Port(const char *port,uint8_t type, int baudrate) {
-    if(type == READ){
-        return Setup_Serial_Receive(port,baudrate);
+
+int Setup_Serial_Port(Serial9BitConfig* config){
+    if(config == NULL)return -1;
+        
+    if(config->mode == READONLYMODE){
+        return Setup_Serial_Receive(config->receivePort,config->baudrate);
     }
-    else if(type == WRITE){
-       return  Setup_Serial_Send(port, baudrate);
+    else if(config->mode == READONLYMODE){
+       return  Setup_Serial_Send(config->sendPort, config->baudrate);
     }
-    else if(type == READWRITE){
-        return Setup_Serial_SendAndReceive(port,baudrate);
+    else if(config->mode == DUALSEPERATEMODE || config->mode == DUALCOMBINEDPORT){
+        if(strcmp(config->sendPort,"")!=0){
+            return Setup_Serial_SendAndReceive(config->sendPort,config->baudrate);
+        }
+        else if(strcmp(config->receivePort,"")!=0){
+            return Setup_Serial_SendAndReceive(config->receivePort,config->baudrate);
+        }
+        else{
+            return -1;
+        }
     }
     else{
         printf("error in setupSerialPort type is not READ, WRITE or READWRITE");
@@ -275,7 +290,6 @@ int Setup_Serial_Port(const char *port,uint8_t type, int baudrate) {
 
 
 //SENDING FUNCTIONS
-
 int Write_Char_9bit(int fd,unsigned char data,bool wakeupbit){
     
     #ifdef DEBUG
@@ -292,14 +306,10 @@ int Write_Char_9bit(int fd,unsigned char data,bool wakeupbit){
 int Write_String_9bit(int fd, char* data,int wakeupbitset){ 
     int len = strlen(data);
     for (uint32_t i=0 ; i<len; i++){
-        clock_t start = clock();
         int errno =  Write_Char_9bit(fd, data[i],wakeupbitset&1);
-        clock_t end = clock();
         if(errno==-1){
             return -1;
         }
-        double time_spent = (double)(end - start) / CLOCKS_PER_SEC;
-        printf("character %c with 9th bit set to %d sent in %f seconds\n",data[i],wakeupbitset&1, time_spent);
         wakeupbitset = wakeupbitset>>1;
     }
     return 0;
@@ -325,6 +335,7 @@ void Process_9bit(char* buf,DataFrame_9bit* data, int size){
             data[index].letter = buf[i];
             data[index].parityerror = false;
         }
+
         bool odd = read_table(data[index].letter);
         bool par_error = data[index].parityerror;
         //parity bit is on if (even and no error) or (odd and error)

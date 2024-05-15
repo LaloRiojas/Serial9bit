@@ -12,21 +12,22 @@
 #include <time.h>
 
 bool portAvailable = true;
-void* SendingThread(int fd){
-    char message[100];
-    
+void* SendingThread(void* c){
+    Serial9BitConfig* config = c;
+    int fd = Setup_Serial_Send(config->sendPort,config->baudrate);
+    char message[64];
     while(portAvailable){
-        printf("Enter message to send: ");
-        scanf("%s", message);
-        clock_t start = clock();
-        if(Write_String_9bit(fd, message, 0b0000001)==-1){
-            printf("Error writing to port '%s'\n");
-            portAvailable = false;
+        printf("Enter message to send max 63 char:");
+        scanf("%63s", message);
+        printf("add a wakeup bit? [y/n]");
+        char wakeup;    
+        scanf("%c", &wakeup);
+        if(wakeup == 'y'){
+            Write_String_9bit(fd,message,1);
         }
-        clock_t end = clock();
-        double time_spent = (double)(end - start) / CLOCKS_PER_SEC;
-        printf("message sent in %f seconds\n", time_spent);
+        else{
+            Write_String_9bit(fd,message,0);
+        }
     }
-    
-    pthread_exit( NULL);
+    pthread_exit(NULL);
 }

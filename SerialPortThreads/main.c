@@ -3,6 +3,8 @@
 #include <fcntl.h>
 #include <termios.h>
 #include <unistd.h>
+#include<bits/getopt_posix.h>
+
 #include <string.h>
 #include <stdbool.h>
 #include <pthread.h>
@@ -10,6 +12,8 @@
 #include "send.h"
 #include "receive.h"
 #include "Serial.h"
+
+
 
 int supportedSpeeds[] = {9600, 19200, 38400, 57600, 115200};
 int supportedSpeedsSize = 5;
@@ -22,7 +26,6 @@ void* Remove_Spaces(char* dest, char* src){
         }
     }
 }
-
 bool Is_Valid_Baud_Rate(int speed){
     for (int i = 0; i < supportedSpeedsSize; i++)
     {
@@ -30,165 +33,189 @@ bool Is_Valid_Baud_Rate(int speed){
             return true;
         }
     }
-       
-    printf("Baud Rate not supported\n supported Baud Rates are: ");
-    for (int i = 0; i < supportedSpeedsSize; i++)
-    {
-        printf("%d ", supportedSpeeds[i]);
-    }
     return false;  
 }
 
-void Read_Config_Console(char* Sendport, char* Receiveport, int* speed, int* mode){
-    int mode;
-    while(1){
-        printf("Enter Mode: \n 1. Separate ports for receive and send \n 2. Same port for receive and send\n");
-        scanf("%d", mode);
-        if(mode == 1 || mode == 2){
-            break;
-        }
-        else 
-            printf("Invalid mode, please type 1 or 2\n");
+void Print_Usage_Message(){
+    printf("4 Modes Available\nw: Write Only\nr: Read Only\nd: Dual Mode with different ports for each\nc: Dual Mode in the same port\n\n");
+    printf("Usage: -w -S <send port> |\n-r -R <receive port> |\n-d -S <send port> -R <receive port> |\n-c <dual combined port>\n");
+}
+
+bool Handle_Arguements(int argc, char* argv[],Serial9BitConfig* config){
+    int c;
+    bool sendPortSet = false, receivePortSet = false, baudRateSet = false;
+
+    while((c = getopt(argc,argv,"wrdcS:R:B:"))!=-1){
+        switch(c){
+            //get the mode
+
+            //write only mode
+            case 'w':
+                if(config->mode != NOTSET){
+                    printf("Multiple Modes Selected\n");
+                    Print_Usage_Message();
+                    return false;
+                }
+                config->mode=WRITEONLYMODE;
+                break;
+
+            //read only mode
+            case 'r':
+                if(config->mode != NOTSET){
+                    printf("Multiple Modes Selected\n");
+                    Print_Usage_Message();
+                    return false;
+                }
+                config->mode=READONLYMODE;
+                break;
+
+            case 'd':
+            //dual mode with seperate ports
+                if(config->mode != NOTSET){
+                    printf("Multiple Modes Selected\n");
+                    Print_Usage_Message();
+                    return false;
+                }
+                config->mode=DUALSEPERATEMODE;
+                break;
             
-    }
-    if(mode == 1){
-        printf("Enter Sending port: ");
-        scanf("%s", Sendport);
-        printf("Enter Receiving port: ");
-        scanf("%s", Receiveport);
+            //dual mode with combined ports
+            case 'c':
+                if(config->mode != NOTSET){
+                    printf("Multiple Modes Selected\n");
+                    Print_Usage_Message();
+                    return false;
+                }
+                config->mode=DUALCOMBINEDPORT;
+                break;
+            
+            //get the ports and baud rate
 
-    }
-    else{
-        printf("Enter Sending and Receiving port: ");
-        scanf("%s", Sendport);
-        strcpy(Receiveport, Sendport);
+            //send port
+            case 'S':
+                //check if the mode is in read only mode
+                if(config->mode == READONLYMODE){
+                    printf("Send Port not needed in read only mode\n");
+                    Print_Usage_Message();
+                    return false;
+                }
+                //check if the port exists
+                if(access(optarg,F_OK)==-1){
+                    printf("Port %s not available\n",optarg);
+                    return false;
+                }
+                strcpy(config->sendPort,optarg);
+                sendPortSet = true;
+                break;
+            
+            //receive port
+            case 'R':
+                //check if the mode is in write only mode
+                if(config->mode == WRITEONLYMODE){
+                    printf("Read Port not needed during write only mode\n");
+                    Print_Usage_Message();
+                    return false;
+                }
+                //check if the port exists
+                if(access(optarg,F_OK)==-1){
+                    printf("Port %s not available\n",optarg);
+                    return false;
+                }
+                strcpy(config->receivePort,optarg);
+                receivePortSet = true;
+                break;
 
-    }
-    while(1){
-        printf("Enter Baud Rate: ");
-        scanf("%d", speed);
-        if(Is_Valid_Baud_Rate(*speed)){
-            break;
+            //get the baud rate
+            case 'B':
+                int baud = atoi(optarg);
+                if(!Is_Valid_Baud_Rate(baud)){
+                    printf("Invalid Baud Rate %d\n",baud);
+                    Print_Usage_Message();
+                    return false;
+                }
+                config->baudrate = baud;
+                baudRateSet = true;
+                break; 
+        
+            case '?':
+                Print_Usage_Message();
+                return false;
+                break;
+            default:
+                printf("Invalid Option %c\n",c);
+                Print_Usage_Message();
+                break;
         }
     }
-
-    
-}
-bool Read_Config_File(FILE* file, char* sendPort, char* receivePort, int* speed , int* mode){
-    char line[100];
-    char trimmedLine[100];
-    char* sp,rp,token;
-    int baudRate;
-    while(fgets(line, 100, file)!=NULL){
-        Remove_Spaces(trimmedLine,line);
-        token = strtok(line, ":=,->");
-        if(strcmp(token, "Mode")==0){
-            token = strtok(NULL, " \n\t");
-            if(strcmp(token, "Separate")==0){
-                *mode = 1;
-            }
-            else if(strcmp(token, "Combined")==0){
-                *mode = 2;
-            }
-        }
-    }
-    if(*mode == 0){
-        printf("Mode not specified in config file\n");
+    if(config->mode == NOTSET){
+        printf("Mode not set\n");
+        Print_Usage_Message();
         return false;
     }
-
-
-
-    while(fgets(line, 100, file)!=NULL){
-        Remove_Spaces(trimmedLine,line);
-        token = strtok(line, ":=,->");
-        if(*mode == 1){
-            if(strcmp(token, "Send Port")==0){
-                token = strtok(NULL, " \n\t");
-                sp = token;
-            }
-            else if(strcmp(token, "Receive Port")==0){
-                token = strtok(NULL, " \n\t");
-                rp = token;
-            }
-        }
-        else if(*mode == 2){
-            if(strcmp(token, "Combined Port")==0){
-                token = strtok(NULL, " \n\t");
-                sp = token;
-                rp = token;
-            }
-        }
-        if(strcmp(token, "Baud Rate")==0){
-            token = strtok(NULL, " \n\t");
-            baudRate = atoi(token);
-        }
-    }
-    strcpy(sendPort, sp);
-    strcpy(receivePort, rp);
-    if(Is_Valid_Baud_Rate(baudRate))
-        *speed = baudRate;
-    else
+    else if(!baudRateSet){
+        printf("Baud Rate not set\n");
+        Print_Usage_Message();
         return false;
-}
+    }
+    else if(config->mode == WRITEONLYMODE && !sendPortSet){
+        printf("Send Port not set\n");
+        Print_Usage_Message();
+        return false;
+    }
+    else if(config->mode == READONLYMODE && !receivePortSet){
+        printf("Receive Port not set\n");
+        Print_Usage_Message();
+        return false;
+    }
+    else if(config->mode == DUALSEPERATEMODE && (!sendPortSet || !receivePortSet)){
+        printf("Send or Receive Port not set in dual seperate mode\n");
+        Print_Usage_Message();
+        return false;
+    }
+    else if(config->mode == DUALCOMBINEDPORT && !sendPortSet && !receivePortSet ){
+        printf("No Port set in dual combined mode\n");
+        Print_Usage_Message();
+        return false;
+    }
+    else 
+        return true;
 
+
+
+
+}
 
 pthread_t SendThread, ReceiveThread;
 int main(int argc,char* argv[]) {
-    const char Sendport [30] ;
-    const char Receiveport [30];
-    const char sendAndReceivePort [30];
-    uint8_t mode;
-    int speed;
-    FILE* configFile;
-
-    if(argc <2 ){
-        printf("No config file specified\n");
-        Read_Config_Console(Sendport, Receiveport, &speed, &mode);
-    }
-    else{
-        if(( configFile =fopen(argv[1], "r"))!=NULL){
-            if(!Read_Config_File(configFile, Sendport, Receiveport, &speed, &mode));
-                Read_Config_Console(Sendport, Receiveport, &speed, &mode);
-        }
-        else{
-            Read_Config_Console(Sendport, Receiveport, &speed, &mode);
-        }
-    }
-
-    if(mode == 1){ // separate port mode
-        int sendFD = Setup_Serial_Send(Sendport, speed);
-        int receiveFD = Setup_Serial_Receive(Receiveport, speed);
-
-        if(pthread_create(&SendThread, NULL, SendingThread,sendFD ) !=0 ){
-            printf("error creating SendThread\n");
-            return 1;
-        }
-        if( pthread_create(&ReceiveThread, NULL, ReceivingThread,receiveFD) !=0){
-            printf("error creating SendThread\n");
-            return 1;
-        }
-
-    }
-    else if(mode == 2){ // combined port mode
-        int sendAndReceiveFD = Setup_Serial_SendAndReceive(sendAndReceivePort, speed);
-        if(pthread_create(&SendThread, NULL, SendingThread,sendAndReceiveFD ) !=0 ){
-            printf("error creating SendThread\n");
-            return 1;
-        }
-        if( pthread_create(&ReceiveThread, NULL, ReceivingThread,sendAndReceiveFD) !=0){
-            printf("error creating SendThread\n");
-            return 1;
-        }
-    }
-    else{
-        printf("Invalid mode\n");
+    Serial9BitConfig config; config.mode = NOTSET; config.baudrate = 0;
+    if(!Handle_Arguements(argc,argv,&config)){
         return 1;
     }
-
-
-    pthread_join(SendThread, NULL);
-    pthread_join(ReceiveThread, NULL);
+    Setup_Serial_Port(&config);
+    switch(config.mode){
+        case WRITEONLYMODE:
+            pthread_create(&SendThread,NULL,SendingThread,&config);
+            pthread_join(SendThread,NULL);
+            break;
+        case READONLYMODE:
+            pthread_create(&ReceiveThread,NULL,ReceivingThread,&config);
+            pthread_join(ReceiveThread,NULL);
+            break;
+        case DUALSEPERATEMODE:
+            pthread_create(&SendThread,NULL,SendingThread,&config);
+            pthread_create(&ReceiveThread,NULL,ReceivingThread,&config);
+            //wait for both threads to finish
+            pthread_join(SendThread,NULL);
+            pthread_join(ReceiveThread,NULL);
+            break;
+        case DUALCOMBINEDPORT:
+            pthread_create(&SendThread,NULL,SendingThread,&config);
+            pthread_create(&ReceiveThread,NULL,ReceivingThread,&config);
+            //wait for both threads to finish
+            pthread_join(SendThread,NULL);
+            pthread_join(ReceiveThread,NULL);
+            break;
+    }
 
     printf("threads done");
     return 0;
