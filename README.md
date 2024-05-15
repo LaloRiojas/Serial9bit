@@ -1,36 +1,26 @@
+
 <div align="center" id="top"> 
   <img src="./.github/app.gif" alt="Linux_serial_port_testing" />
 
   &#xa0;
 
-  <!-- <a href="https://linux_serial_port_testing.netlify.app">Demo</a> -->
 </div>
 
-<h1 align="center">Linux_serial_port_testing</h1>
+<h1 align="center">Serial9Bit</h1>
 
 <p align="center">
-  <img alt="Github top language" src="https://img.shields.io/github/languages/top/{{YOUR_GITHUB_USERNAME}}/linux_serial_port_testing?color=56BEB8">
-
-  <img alt="Github language count" src="https://img.shields.io/github/languages/count/{{YOUR_GITHUB_USERNAME}}/linux_serial_port_testing?color=56BEB8">
-
-  <img alt="Repository size" src="https://img.shields.io/github/repo-size/{{YOUR_GITHUB_USERNAME}}/linux_serial_port_testing?color=56BEB8">
-
-  <img alt="License" src="https://img.shields.io/github/license/{{YOUR_GITHUB_USERNAME}}/linux_serial_port_testing?color=56BEB8">
-
-  <!-- <img alt="Github issues" src="https://img.shields.io/github/issues/{{YOUR_GITHUB_USERNAME}}/linux_serial_port_testing?color=56BEB8" /> -->
-
-  <!-- <img alt="Github forks" src="https://img.shields.io/github/forks/{{YOUR_GITHUB_USERNAME}}/linux_serial_port_testing?color=56BEB8" /> -->
-
-  <!-- <img alt="Github stars" src="https://img.shields.io/github/stars/{{YOUR_GITHUB_USERNAME}}/linux_serial_port_testing?color=56BEB8" /> -->
+  <img alt="Github top language" src="https://img.shields.io/github/languages/top/LaloRiojas/linux_serial_port_testing?color=56BEB8">
+ <img alt="Github language count" src="https://img.shields.io/github/languages/count/LaloRiojas/linux_serial_port_testing?color=56BEB8" >
+<img alt="Repository size" src="https://img.shields.io/github/repo-size/LaloRiojas/linux_serial_port_testing?color=56BEB8">
+<img alt="License" src="https://img.shields.io/github/license/LaloRiojas/linux_serial_port_testing?color=56BEB8">
 </p>
 
-<!-- Status -->
 
-<!-- <h4 align="center"> 
-	🚧  Linux_serial_port_testing 🚀 Under construction...  🚧
+<h4 align="center"> 
+	🚧  Serial9bit 🚀 Under construction...  🚧
 </h4> 
 
-<hr> -->
+<hr> 
 
 <p align="center">
   <a href="#dart-about">About</a> &#xa0; | &#xa0; 
@@ -46,52 +36,60 @@
 
 ## :dart: About ##
 
-Describe your project
+This project is a 9-bit library with a command-line interface (CLI). It provides functionality for working with 9-bit data on DB9 Serial ports. The library is designed to Send and recienve 9 bit data over a serial port. The CLI provides a user-friendly interface for executing operations on 9-bit numbers and can be used as a standalone tool or integrated into other applications.
+
+The library is writtten in C and is designed to be used in other projects that require 9-bit data transmission over a serial port. This is common in old serial communication protocols that use the 9th bit as a wakeup bit or for error checking etc. The library provides functions for sending and receiving 9-bit data over a serial port, as well as functions for setting up the serial port. more information can be found in the Serial.h file.
+
+Please note that this project is intended to be used as a library, but it also includes a CLI for testing and demonstration purposes. the CLI is very much in ALPHA stage and is probably not working. no testing has been done on it 
+
 
 ## :sparkles: Features ##
 
-:heavy_check_mark: Feature 1;\
-:heavy_check_mark: Feature 2;\
-:heavy_check_mark: Feature 3;
+:heavy_check_mark: set up the Serial porst for 9-bit communication; 
+
+:heavy_check_mark: Send 9-bit data over a serial port;
+
+:heavy_check_mark: Receive 9-bit data over a serial port;
+
+:heavy_check_mark: print 9-bit data in a human readable format;
+
 
 ## :rocket: Technologies ##
 
 The following tools were used in this project:
 
-- [Expo](https://expo.io/)
-- [Node.js](https://nodejs.org/en/)
-- [React](https://pt-br.reactjs.org/)
-- [React Native](https://reactnative.dev/)
-- [TypeScript](https://www.typescriptlang.org/)
+- [C](https://en.wikipedia.org/wiki/C_(programming_language))
+- [POSIX](https://en.wikipedia.org/wiki/POSIX)
+- [CMAKE](https://cmake.org/)
 
 ## :white_check_mark: Requirements ##
 
-Before starting :checkered_flag:, you need to have [Git](https://git-scm.com) and [Node](https://nodejs.org/en/) installed.
+Before starting :checkered_flag:, you need to have [Git](https://git-scm.com) and [CMAKE](https://cmake.org/) installed.
 
 ## :checkered_flag: Starting ##
 
 ```bash
 # Clone this project
-$ git clone https://github.com/{{YOUR_GITHUB_USERNAME}}/linux_serial_port_testing
+$ git clone https://github.com/LaloRiojas/linux_serial_port_testing
 
 # Access
 $ cd linux_serial_port_testing
 
 # Install dependencies
-$ yarn
+$ mkdir build && cd build 
+
+# USE CMAKE
+$ cmake .. 
+$ cmake --build .
 
 # Run the project
-$ yarn start
+$ ./Serial9Bit #command line args
 
-# The server will initialize in the <http://localhost:3000>
 ```
-
 ## :memo: License ##
 
-This project is under license from MIT. For more details, see the [LICENSE](LICENSE.md) file.
+NOLICENSE USE AT YOUR OWN RISK AND FOLLOW POSIX GUIDELINES AND OTHER DEPENDENCIES LICENSES
 
-
-Made with :heart: by <a href="https://github.com/{{YOUR_GITHUB_USERNAME}}" target="_blank">{{YOUR_NAME}}</a>
 
 &#xa0;
 
