@@ -9,10 +9,10 @@
 <h1 align="center">Serial9Bit</h1>
 
 <p align="center">
-  <img alt="Github top language" src="https://img.shields.io/github/languages/top/LaloRiojas/linux_serial_port_testing?color=56BEB8">
- <img alt="Github language count" src="https://img.shields.io/github/languages/count/LaloRiojas/linux_serial_port_testing?color=56BEB8" >
-<img alt="Repository size" src="https://img.shields.io/github/repo-size/LaloRiojas/linux_serial_port_testing?color=56BEB8">
-<img alt="License" src="https://img.shields.io/github/license/LaloRiojas/linux_serial_port_testing?color=56BEB8">
+  <img alt="Github top language" src="https://img.shields.io/github/languages/top/LaloRiojas/Serial9bit?color=56BEB8">
+ <img alt="Github language count" src="https://img.shields.io/github/languages/count/LaloRiojas/Serial9bit?color=56BEB8" >
+<img alt="Repository size" src="https://img.shields.io/github/repo-size/LaloRiojas/Serial9bit?color=56BEB8">
+<img alt="License" src="https://img.shields.io/github/license/LaloRiojas/Serial9bit?color=56BEB8">
 </p>
 
 
