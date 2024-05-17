@@ -15,18 +15,21 @@
 void* ReceivingThread(void* c){
 
     Serial9BitConfig* config = c;
-    int fd = Setup_Serial_Receive(config->receivePort,config->baudrate);
-
+    int fd = config->receiveFD;
+    printf("Reading 9 bit data\n");
 
     char buf [buffer_size];
     DataFrame_9bit data[buffer_size];
-    int messagesize = read(fd,&buf,buffer_size);
-    
 
-
-    Process_9bit(buf,data,messagesize);
-    Print_processed_data(data,messagesize);
-    pthread_exit( NULL);
+    while(true){
+        //read the data
+        int messagesize = read(fd,&buf,buffer_size);
+        //process the data
+        int processedSize = Process_9bit(buf,data,messagesize,config->receiveFD);
+        printf("received %d bytes",processedSize);
+        //print the data
+        Print_processed_data(data,processedSize);
+    }
 }
 
 

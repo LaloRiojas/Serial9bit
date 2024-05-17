@@ -15,8 +15,7 @@
 
 
 
-int supportedSpeeds[] = {9600, 19200, 38400, 57600, 115200};
-int supportedSpeedsSize = 5;
+
 
 void* Remove_Spaces(char* dest, char* src){
     for (int i = 0; i < strlen(src); i++)
@@ -26,31 +25,23 @@ void* Remove_Spaces(char* dest, char* src){
         }
     }
 }
-bool Is_Valid_Baud_Rate(int speed){
-    for (int i = 0; i < supportedSpeedsSize; i++)
-    {
-        if(speed == supportedSpeeds[i]){
-            return true;
-        }
-    }
-    return false;  
-}
+
 
 void Print_Usage_Message(){
     printf("4 Modes Available\nw: Write Only\nr: Read Only\nd: Dual Mode with different ports for each\nc: Dual Mode in the same port\n\n");
-    printf("Usage: -w -S <send port> |\n-r -R <receive port> |\n-d -S <send port> -R <receive port> |\n-c <dual combined port>\n");
+    printf("Usage: -s -S <send port> -B [POSIX SUPPORTED BAUD RATE] |\n-r -R <receive port> -B [POSIX SUPPORTED BAUD RATE] |\n-d -S <send port> -R <receive port> -B [POSIX SUPPORTED BAUD RATE] |\n-c <dual combined port> -B [POSIX SUPPORTED BAUD RATE]\n");
 }
 
 bool Handle_Arguements(int argc, char* argv[],Serial9BitConfig* config){
     int c;
     bool sendPortSet = false, receivePortSet = false, baudRateSet = false;
 
-    while((c = getopt(argc,argv,"wrdcS:R:B:"))!=-1){
+    while((c = getopt(argc,argv,"hsrdcS:R:B:"))!=-1){
         switch(c){
-            //get the mode
 
+            //get the mode
             //write only mode
-            case 'w':
+            case 's':
                 if(config->mode != NOTSET){
                     printf("Multiple Modes Selected\n");
                     Print_Usage_Message();
@@ -137,6 +128,7 @@ bool Handle_Arguements(int argc, char* argv[],Serial9BitConfig* config){
                 baudRateSet = true;
                 break; 
         
+            case 'h':
             case '?':
                 Print_Usage_Message();
                 return false;
@@ -187,19 +179,29 @@ bool Handle_Arguements(int argc, char* argv[],Serial9BitConfig* config){
 
 pthread_t SendThread, ReceiveThread;
 int main(int argc,char* argv[]) {
-    Serial9BitConfig config; config.mode = NOTSET; config.baudrate = 0;
+    Serial9BitConfig config; 
+    config.mode = NOTSET;
+    config.baudrate = 0;
+    config.receivePort[0] = '\0';
+    config.sendPort[0]='\0';
+
     if(!Handle_Arguements(argc,argv,&config)){
         return 1;
     }
-    Setup_Serial_Port(&config);
+    
+
+
+    if(!Setup_Serial_Port(&config)){
+        printf("Error setting up Serial Port(s). Exiting program....\n");
+        exit(1);
+    }
+    
     switch(config.mode){
         case WRITEONLYMODE:
-            pthread_create(&SendThread,NULL,SendingThread,&config);
-            pthread_join(SendThread,NULL);
+            SendingThread(&config);
             break;
         case READONLYMODE:
-            pthread_create(&ReceiveThread,NULL,ReceivingThread,&config);
-            pthread_join(ReceiveThread,NULL);
+            ReceivingThread(&config);
             break;
         case DUALSEPERATEMODE:
             pthread_create(&SendThread,NULL,SendingThread,&config);

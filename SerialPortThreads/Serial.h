@@ -9,6 +9,8 @@ typedef struct Serial9BitConfig_t{
     char receivePort[50];
     int mode ;
     int baudrate ;
+    int sendFD;
+    int receiveFD;
 }Serial9BitConfig;
 
 //CONFIG FUNCTIONS
@@ -16,7 +18,8 @@ void Set_Parity_Bit(uint8_t* data, int fd, bool parity_bit);
 int Setup_Serial_Send(const char* port, int speed);
 int Setup_Serial_Receive(const char* port, int speed);
 int Setup_Serial_SendAndReceive(const char* port, int speed);
-int Setup_Serial_Port(Serial9BitConfig* config);
+bool Setup_Serial_Port(Serial9BitConfig* config);
+bool Is_Valid_Baud_Rate(int speed);
 
 
 
@@ -30,10 +33,10 @@ int Write_Array_9bit(int fd,uint16_t* dataArray,int size);
 typedef struct received_data {
     char letter;
     bool parityerror;
-    bool paritybit;
+    bool bit9;
 } DataFrame_9bit;
 
-void Process_9bit(char* buf,DataFrame_9bit* data ,int size);
+int Process_9bit(char* buf,DataFrame_9bit* data ,int size,int fd);
 
 void print_results(char* buf, int size);
 void Print_processed_data(DataFrame_9bit* data, int size);

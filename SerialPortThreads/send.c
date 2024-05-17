@@ -14,19 +14,30 @@
 bool portAvailable = true;
 void* SendingThread(void* c){
     Serial9BitConfig* config = c;
-    int fd = Setup_Serial_Send(config->sendPort,config->baudrate);
+    int fd = config->sendFD;
     char message[64];
     while(portAvailable){
-        printf("Enter message to send max 63 char:");
+        printf("Enter message to send max 63 char:\n");
         scanf("%63s", message);
-        printf("add a wakeup bit? [y/n]");
-        char wakeup;    
-        scanf("%c", &wakeup);
-        if(wakeup == 'y'){
-            Write_String_9bit(fd,message,1);
-        }
-        else{
-            Write_String_9bit(fd,message,0);
+        
+        char wakeup[4];
+
+        //ask if they would like a wakeup bit
+        printf("Would you like to add a wakeup bit to the first byte [y/n]\n");
+        while(true){
+            scanf("%3s", wakeup);
+            
+            if(*wakeup == 'y' || *wakeup == 'Y'){
+                Write_String_9bit(fd,message,1);
+                break;
+            }
+            else if (*wakeup == 'n' || *wakeup == 'N'){
+                Write_String_9bit(fd,message,0);
+                break;
+            }
+            else{
+                printf("expected a y or n\n");
+            }
         }
     }
     pthread_exit(NULL);

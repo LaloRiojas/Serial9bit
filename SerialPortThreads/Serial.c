@@ -11,42 +11,80 @@
 
 #include "Serial.h"
 
-uint8_t oddEvenParityTable [255];
+uint8_t oddParityTable [256] = {1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1};
 bool tableInitialized = false;
+
+
+//Inity_Parity_Table() longer needed since its a constant always.
+
+/*
 void Init_Parity_Table(void){
-    
-    for(uint8_t count =0;count<255;count++ ){
+    //calculate the even parity for all possible 8 bit values. 256 total  
+    for(uint8_t count =0;count<256;count++ ){
         uint8_t temp = count;
         uint8_t parity = 0;
         while(temp){
             parity = parity ^ (temp & 1) ;
             temp >>= 1;
         }
-        oddEvenParityTable[count] = parity & 1; // 1 if odd. 
-                                                //0 if even
+        oddParityTable[count] = parity & 1; // 1 if odd. 0 if even
     }
     tableInitialized = true; 
 }
+*/
+
+int supportedBaud[] = {9600, 19200, 38400, 57600, 115200};
+int supportedBuadSetting[] = {B9600,B19200,B38400,B57600,B115200};
+#define supportedBaudSize  5
+//checks if the speed is in the above POSIX supported speeds. 
+//not more speeds can be added but not really needed. 
+bool Is_Valid_Baud_Rate(int speed){
+    //loop and return if speed is equal to a valid speed in array;
+    for (int i = 0; i < supportedBaudSize; i++)
+        if(speed == supportedBaud[i])
+            return true; 
+
+    return false;  
+}
+
+int Get_Baud_Rate_Setting(int baud){
+    for (int i = 0; i < supportedBaudSize; i++)
+        if(baud == supportedBaud[i])
+            return supportedBuadSetting[i]; 
+
+    return -1; 
+}
+
+/**
+ * @brief changes the parity bit settting depending on the data that is going to be sent.
+ * 
+ * @param data 8 bit data
+ * @param fd port to send it in 
+ * @param parity_bit desired 9th bit
+ */
+
 void Set_Parity_Bit(uint8_t* data, int fd, bool parity_bit){
-    if(tableInitialized == false){
-        Init_Parity_Table(); // make sure the table has been initilaized
-    }
 
-
-    bool odd = oddEvenParityTable[*data]; // look up table for the even/odd high bits of the data (only for 8 bit data)
-
-
+    // look up table for the even/odd high bits of the data (only for 8 bit data)
+    bool isodd = oddParityTable[*data]; 
+    
+    //get the fd options to modify
     struct termios options;
     tcgetattr(fd, &options);
-    options.c_cflag|= PARENB;
-    ;
 
-    if((odd&&parity_bit)||(!parity_bit&&!odd)){ 
+    //set the parity flags
+    options.c_cflag|= PARENB;
+
+    //odd parity if (evendata and 9thbit=0) or (odddata and 9thbit=1)
+    //this can be changed to isodd == paritybit but makes code unclear
+    if((isodd&&parity_bit)||(!parity_bit&&!isodd)){ 
         options.c_cflag|= PARODD; //odd parity
         #ifdef DEBUG
             printf(" ,parity bit %1d ,oddness %1d ,odd parity\n",parity_bit,odd)
         #endif
     }
+
+    //even parity if (evendata and 9thbit=1) or (odddata and 9thbit=0)
     else{
         options.c_cflag&= ~PARODD; //even parity
         #ifdef DEBUG
@@ -54,52 +92,40 @@ void Set_Parity_Bit(uint8_t* data, int fd, bool parity_bit){
         #endif
     }
 
-    
+    //set the stuff with drain so that other things are not effected
+    //If optional_actions is TCSADRAIN, the change shall occur after all output written to fildes is transmitted. This function should be used when changing parameters that affect output.
     tcsetattr(fd, TCSADRAIN ,&options);
 
-    tcdrain(fd);
+
 }
 
-uint8_t read_table(uint8_t data){
-    if(tableInitialized == false){
-        Init_Parity_Table(); // make sure the table has been initilaized
-    }
-    return oddEvenParityTable[data];
-}
 
 int Setup_Serial_Receive(const char* port, int baudrate){
     int fd = open(port, O_RDONLY | O_NOCTTY);
     if (fd == -1) {
-        printf("could not open Receive port '%s' immediately: blocking until available\n",port);
-    }
-    while ((fd = open(port, O_RDONLY | O_NOCTTY)) == -1) {
-
+        printf("could not open Receive port '%s': blocking until available\n",port);
+        while ((fd = open(port, O_WRONLY| O_NOCTTY|O_SYNC )) == -1) {
+            sleep(1);
+        }
+        printf("successfully opened Receive port %s\n",port);
     }
 
     struct termios options;
-    if(baudrate == 9600){
-        cfsetospeed(&options, B9600);
-    }
-    else if(baudrate == 19200){
-        cfsetospeed(&options, B19200);
-    }
-    else if(baudrate == 38400){
-        cfsetospeed(&options, B38400);
-    }
-    else if(baudrate == 57600){
-        cfsetospeed(&options, B57600);
-    }
-    else if(baudrate == 115200){
-        cfsetospeed(&options, B115200);
+    tcgetattr(fd, &options);
+
+    int baudSetting = Get_Baud_Rate_Setting(baudrate);
+    if(baudSetting!=-1){
+        cfsetispeed(&options,baudSetting);
     }
     else{
         printf("invalid baudrate when settting up Send port '%s'\n",port);
-        exit(1);
-    }    tcgetattr(fd, &options);
+        close(fd);
+        return -1;
+    }    
 
     //setup parrity
     options.c_cflag |= PARENB; // enable parity marking see end of file for description on how to detect parity
-    options.c_cflag &= ~PARODD; // default is even parity but will be switched depending on data being sent  when sending
+    options.c_cflag &= ~PARODD; // default is even parity and that is what we calculate the 9th bit based on 
 
     options.c_iflag |= PARMRK; // mark parity errors
     options.c_iflag &= ~IGNPAR; // dont ignore parity errors
@@ -131,42 +157,33 @@ int Setup_Serial_Receive(const char* port, int baudrate){
     options.c_iflag &= ~IXOFF;
     options.c_iflag &= ~IXANY;
     
-    tcsetattr(fd, TCSADRAIN,&options);
-    tcdrain(fd);
+    tcsetattr(fd, TCSADRAIN,&options);    
     return fd;
-
 }
 
-int Setup_Serial_Send(const char* port, int baudrate){
+int  Setup_Serial_Send(const char* port, int baudrate){
     int fd = open(port, O_WRONLY| O_NOCTTY|O_SYNC );
     if(fd == -1){
-        printf("could not open Sending port '%s' immediately: blocking until available\n",port);
-    }
-    while ((fd = open(port, O_WRONLY| O_NOCTTY|O_SYNC )) == -1) {
-
+        printf("could not open Sending port '%s' : blocking until available\n",port);
+        while ((fd = open(port, O_WRONLY| O_NOCTTY|O_SYNC )) == -1) {
+            sleep(1);
+        }
+        printf("successfully opened Send port '%s'\n",port);
     }
     
     struct termios options;
-    if(baudrate == 9600){
-        cfsetospeed(&options, B9600);
-    }
-    else if(baudrate == 19200){
-        cfsetospeed(&options, B19200);
-    }
-    else if(baudrate == 38400){
-        cfsetospeed(&options, B38400);
-    }
-    else if(baudrate == 57600){
-        cfsetospeed(&options, B57600);
-    }
-    else if(baudrate == 115200){
-        cfsetospeed(&options, B115200);
+    tcgetattr(fd, &options);
+    
+    //set the baudrate 
+    int baudrateSeting = Get_Baud_Rate_Setting(baudrate);
+    if(baudrateSeting!=-1){
+        cfsetospeed(&options,baudrateSeting);
     }
     else{
         printf("invalid baudrate when settting up Send port '%s'\n",port);
-        exit(1);
+        close(fd);
+        return -1;
     }
-    tcgetattr(fd, &options);
 
     //setup parrity
     options.c_cflag |= PARENB; // enable parity marking see end of file for description on how to detect parity
@@ -186,39 +203,45 @@ int Setup_Serial_Send(const char* port, int baudrate){
     options.c_iflag &= ~(IXON | IXOFF | IXANY);
 
     tcsetattr(fd, TCSADRAIN,&options);
-    tcdrain(fd);
+
     return fd;
     
 }
 
+
+//UNTESTED AND MAY NOT WORK because reading 9 bit data assumes the parity checking is even.
+//However, when sending data over the same serial port in 9 bits you have to constantly switch
+//the parity setting for each byte that you send. 
+//I am not sure that if you send data at the same time as you read data, the incoming data will
+//be affected by the changing parity settings. This is hard to overcome because the incoming buffer say 30 bytes
+//may have different parity checking settings along the 30 bytes. 
+//I really wish that sending and receiving didnt use the same PARROD flag to set its parity type
 int Setup_Serial_SendAndReceive(const char* port, int baudrate){
 
-
-        int fd = open(port, O_RDWR | O_NOCTTY | O_SYNC);
+    int fd = open(port, O_RDWR | O_NOCTTY | O_SYNC);
     if (fd == -1) {
-        printf("could not open SendAndReceive port '%s' immediately: blocking until available\n",port);
+        printf("could not open SendAndReceive port '%s': blocking until available\n",port);
+        while ((fd = open(port, O_WRONLY| O_NOCTTY|O_SYNC )) == -1) {
+            sleep(1);
+        }
+        printf("successfully opened Send and Receive port '%s'\n",port);
     }
+
 
     struct termios options;
-    if(baudrate == 9600){
-        cfsetospeed(&options, B9600);
-    }
-    else if(baudrate == 19200){
-        cfsetospeed(&options, B19200);
-    }
-    else if(baudrate == 38400){
-        cfsetospeed(&options, B38400);
-    }
-    else if(baudrate == 57600){
-        cfsetospeed(&options, B57600);
-    }
-    else if(baudrate == 115200){
-        cfsetospeed(&options, B115200);
+    tcgetattr(fd, &options);
+
+    int baudrateSeting = Get_Baud_Rate_Setting(baudrate);
+    if(baudrateSeting!=-1){
+        cfsetospeed(&options,baudrateSeting);
+        cfsetispeed(&options,baudrateSeting);
     }
     else{
         printf("invalid baudrate when settting up Send port '%s'\n",port);
-        exit(1);
-    }    tcgetattr(fd, &options);
+        close(fd);
+        return -1;
+    }    
+
 
     //setup parrity
     options.c_cflag |= PARENB; // enable parity marking see end of file for description on how to detect parity
@@ -255,34 +278,55 @@ int Setup_Serial_SendAndReceive(const char* port, int baudrate){
     options.c_iflag &= ~IXANY;
     
     tcsetattr(fd, TCSADRAIN,&options);
-    tcdrain(fd);
     return fd;
-
 }
+bool Setup_Serial_Port(Serial9BitConfig* config){
+    if(config == NULL || !Is_Valid_Baud_Rate(config->baudrate))return -1;
 
-int Setup_Serial_Port(Serial9BitConfig* config){
-    if(config == NULL)return -1;
-        
+    //read only mode uses Setup_Serial_Send()
     if(config->mode == READONLYMODE){
-        return Setup_Serial_Receive(config->receivePort,config->baudrate);
+        config->receiveFD = Setup_Serial_Receive(config->receivePort,config->baudrate);
+        return config->receiveFD!=-1;
     }
-    else if(config->mode == READONLYMODE){
-       return  Setup_Serial_Send(config->sendPort, config->baudrate);
+    //write only mode uses Setup_Serial_Send()
+    else if(config->mode == WRITEONLYMODE){
+        config->sendFD =  Setup_Serial_Send(config->sendPort, config->baudrate);
+        return config->sendFD != -1;
     }
-    else if(config->mode == DUALSEPERATEMODE || config->mode == DUALCOMBINEDPORT){
+
+    else if (config->mode == DUALSEPERATEMODE){
+
+        //set up the ports seperately since we know they are not the same port;
+        config->sendFD = Setup_Serial_Send(config->sendPort,config->baudrate) && Setup_Serial_Receive(config->sendPort, config->baudrate);
+        config->receiveFD = Setup_Serial_Receive(config->receivePort,config->baudrate);
+
+        //both file descriptors need to be valid to return true;
+        return config->sendFD != -1 && config->receiveFD!=-1;
+    }
+
+    else if(config->mode == DUALCOMBINEDPORT){
         if(strcmp(config->sendPort,"")!=0){
-            return Setup_Serial_SendAndReceive(config->sendPort,config->baudrate);
+
+            config->sendFD =  Setup_Serial_SendAndReceive(config->sendPort,config->baudrate);
+            config->receiveFD = config->sendFD;
+            //return false if the file descriptor was an error
+            return config->sendFD != -1;
         }
         else if(strcmp(config->receivePort,"")!=0){
-            return Setup_Serial_SendAndReceive(config->receivePort,config->baudrate);
+
+            config->sendFD = Setup_Serial_SendAndReceive(config->receivePort,config->baudrate);
+            config->receiveFD = config->sendFD;
+            return config->sendFD != -1;
         }
         else{
+            printf("ERROR in Setup_Serial_Port: no valid port");
             return -1;
         }
     }
+
     else{
-        printf("error in setupSerialPort type is not READ, WRITE or READWRITE");
-        exit(1);
+        printf("ERROR in Setup_Serial_Port: config->mode is not valid.");
+        return -1;
     }
 
 }
@@ -297,23 +341,24 @@ int Write_Char_9bit(int fd,unsigned char data,bool wakeupbit){
     #endif
         Set_Parity_Bit(&data, fd, wakeupbit);
     
-    return (write(fd, &data, 1) == -1)? -1:0;
+    return write(fd, &data, 1);
 }
 // wakeupbitset is a bitset of which characters are going to have the 9th bit high. 
 // 0b00000001 or 1 means the first character will have the 9th bit high
 // 0b00000011 or 3 means the first and second character will have the 9th bit high
 // etc
 int Write_String_9bit(int fd, char* data,int wakeupbitset){ 
-    int len = strlen(data);
-    for (uint32_t i=0 ; i<len; i++){
+    int i;
+    for (i =0; i<strlen(data); i++){
         int errno =  Write_Char_9bit(fd, data[i],wakeupbitset&1);
         if(errno==-1){
             return -1;
         }
         wakeupbitset = wakeupbitset>>1;
     }
-    return 0;
+    return i;
 }
+//writes the first 8 bits as a char and the 9th bit as the parity wakeup bit
 int Write_Array_9bit(int fd,uint16_t* dataArray,int size){
     for(int i=0;i<size;i++){
         if(Write_Char_9bit(fd, 0xFF&(dataArray[i]>>1),dataArray[i]&1) == -1){
@@ -323,30 +368,66 @@ int Write_Array_9bit(int fd,uint16_t* dataArray,int size){
     
 }
 // RECEIVING FUNCTIONS
-void Process_9bit(char* buf,DataFrame_9bit* data, int size){
+
+//size is the size of the buffers
+//buf is the serial port input stream of data
+//Datafrom 9 bit is where the result is stored and is expected to be a pointer to an array = size
+//DataFrame_9bit.len <= buf.len 
+//result is the amount of data filled out. 
+int Process_9bit(char* buf,DataFrame_9bit* data, int size,int fd){
     int i,index;
+    //
     for (i = 0, index=0; i<size; i++,index++){
-        if(buf[i] ==-1 && buf[i+1] == 0 ){
-            i+=2;   //skip the wakeup sequence
+
+        //check if there is a parity error
+        //0xFF 0x00 0x[char with parity error]
+
+        if(i+2<size){//check if we would be going out of range of the array before checking ahead bytes
+            if(buf[i] ==0xFF && i+2<size && buf[i+1] == 0x00){
+                i+=2;   //skip the wakeup sequence
+                data[index].letter = buf[i];
+                data[index].parityerror = true;
+            }
+            else {
             data[index].letter = buf[i];
-            data[index].parityerror = true;
+            data[index].parityerror = false;
+            }
         }
         else{
             data[index].letter = buf[i];
             data[index].parityerror = false;
         }
 
-        bool odd = read_table(data[index].letter);
+        bool dataIsOddParity = oddParityTable[data[index].letter];
         bool par_error = data[index].parityerror;
-        //parity bit is on if (even and no error) or (odd and error)
-        //parity bit is off if (even and error) or (odd and no error)
-        if((odd&&par_error)||!(odd||par_error)){
-            data[index].paritybit = true;
-        }
-        else{
-            data[index].paritybit = false;
-        }
+
+        //if the receiving port was checking for EVEN parity  
+        //9thbit=1 if (even and no error) or (odd and error)
+        //9thbit=0 if (even and error) or (odd and no error)
+
+        //if the receiving port was checking for ODD parity  
+        //9thbit=1 if (odd and no error) or (even and error)
+        //9thbit=0 if (odd and error) or (even and no error)
+
+        //find out what the receiving port is checking for 
+        struct termios options;
+        tcgetattr(fd,&options);
+        bool oddParityMode = (options.c_cflag & PARODD )!=0;//if this bit was cleared then it would be in even mode
+
+
+        //should the parity bit be 1? aka does the parity mode match the datas parity 
+        bool expectedPartitybit = oddParityMode == dataIsOddParity;
+
+        //9thbit = 1 if (expectedParitybit=1 && parityerror=0) or (expectedParitybit=0 && parityerror =1)
+        //9thbit = 0 if (expectedParitybit=0 && parityerror=0) or (expectedParitybit=1 && parityerror =1)
+        //this is an xor operation or even 
+        //9thbit = (parityerror) ? !expectedparitybit : expectedparitybit
+        data[index].bit9 = expectedPartitybit ^ data[index].parityerror;
+
+
+
     }
+    return index;
 }
 void red () {
   printf("\033[1;31m");
@@ -376,14 +457,14 @@ void print_results(char* buf, int size){
 void Print_processed_data(DataFrame_9bit* data, int size){
     printf("Parritybit \t Letter \t 9bit data\n");
     for(int i =0;i< size;i++){
-        printf( "%1d \t\t %c \t\t %03X\n",data[i].paritybit,data[i].letter,(data[i].letter<<1)|data[i].paritybit);
+        printf( "%1d \t\t %c \t\t %03X\n",data[i].bit9,data[i].letter,(data[i].letter<<1)|data[i].bit9);
     }
 }
 
 void Encode_9bit_data(DataFrame_9bit* data,uint16_t* result, int size){
     for( int i =0;i<size;i++){
-        data[i].paritybit = (data[i].paritybit)? 1:0;
-        result[i] = (data[i].letter<<1)|data[i].paritybit;
+        data[i].bit9 = (data[i].bit9)? 1:0;
+        result[i] = (data[i].letter<<1)|data[i].bit9;
     }
 }
 
