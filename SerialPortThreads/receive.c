@@ -11,7 +11,7 @@
 #include "Serial.h"
 #include "receive.h"
 
-#define buffer_size 30
+#define buffer_size 100
 void* ReceivingThread(void* c){
 
     Serial9BitConfig* config = c;
@@ -26,7 +26,7 @@ void* ReceivingThread(void* c){
         int messagesize = read(fd,&buf,buffer_size);
         //process the data
         int processedSize = Process_9bit(buf,data,messagesize,config->receiveFD);
-        printf("received %d bytes",processedSize);
+        printf("received %d bytes\n",processedSize);
         //print the data
         Print_processed_data(data,processedSize);
     }

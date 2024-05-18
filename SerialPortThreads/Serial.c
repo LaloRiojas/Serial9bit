@@ -144,9 +144,9 @@ int Setup_Serial_Receive(const char* port, int baudrate){
     //enable the reader
     options.c_cflag |= CREAD;
 
-    //blocks until either 100 bytes are read or 10 deciseconds (1 second) interbyte delay has passed
+    //blocks until either 100 bytes are read or 10 deciseconds (1.5 second) interbyte delay has passed
     options.c_cc[VMIN] = 100;
-    options.c_cc[VTIME] = 10;
+    options.c_cc[VTIME] = 15;
 
     //disabling other random stuff that might be on
     options.c_lflag &= ~ ECHO;// no echo
@@ -336,9 +336,12 @@ bool Setup_Serial_Port(Serial9BitConfig* config){
 //SENDING FUNCTIONS
 int Write_Char_9bit(int fd,unsigned char data,bool wakeupbit){
     
-    #ifdef DEBUG
-        printf("writing %c/%d",data,data);
-    #endif
+        #ifdef DEBUG
+            printf("writing %c/%d/",data,wakeupbit);
+            if(oddParityTable[data])printf("odd\n");
+            else printf("even\n");
+        #endif
+
         Set_Parity_Bit(&data, fd, wakeupbit);
     
     return write(fd, &data, 1);
@@ -383,7 +386,7 @@ int Process_9bit(char* buf,DataFrame_9bit* data, int size,int fd){
         //0xFF 0x00 0x[char with parity error]
 
         if(i+2<size){//check if we would be going out of range of the array before checking ahead bytes
-            if(buf[i] ==0xFF && i+2<size && buf[i+1] == 0x00){
+            if(buf[i] ==-1 && buf[i+1] == 0x00){
                 i+=2;   //skip the wakeup sequence
                 data[index].letter = buf[i];
                 data[index].parityerror = true;
@@ -453,19 +456,23 @@ void print_results(char* buf, int size){
 
     printf("\n");
 }
+uint16_t Encode_9bit_data(char letter, bool bit9);
 
 void Print_processed_data(DataFrame_9bit* data, int size){
-    printf("Parritybit \t Letter \t 9bit data\n");
+    printf("bit9 \t\t Letter \t 9bit data\n");
     for(int i =0;i< size;i++){
-        printf( "%1d \t\t %c \t\t %03X\n",data[i].bit9,data[i].letter,(data[i].letter<<1)|data[i].bit9);
+        printf( "%1d \t\t %c \t\t 0x%03X\n",data[i].bit9,data[i].letter,Encode_9bit_data(data[i].letter,data[i].bit9));
     }
 }
 
-void Encode_9bit_data(DataFrame_9bit* data,uint16_t* result, int size){
+void Encode_9bit_data_Array(DataFrame_9bit* data,uint16_t* result, int size){
     for( int i =0;i<size;i++){
         data[i].bit9 = (data[i].bit9)? 1:0;
         result[i] = (data[i].letter<<1)|data[i].bit9;
     }
+}
+uint16_t Encode_9bit_data(char letter, bool bit9){
+    return letter | (bit9<<8);
 }
 
 /*
